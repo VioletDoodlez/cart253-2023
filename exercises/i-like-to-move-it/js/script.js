@@ -79,32 +79,32 @@ function draw() {
     
     //Circle 1
     circle1.y = circle1.y + 1;
-    circle1.y = constrain(circle1.y, 0, 210);
+    circle1.y = constrain(circle1.y, 0, 210); //makes the circle stop at the near center of the canvas
     circle1.size = circle1.size + 0.25;
     circle1.size = constrain(circle1.size, 0, 150);
-    circle1.fill.b = map(mouseX,0,width,0,255);
+    circle1.fill.b = map(mouseX,0,width,0,255); //changes the shade of the circle when the mouse moves
     fill(circle1.fill.r, circle1.fill.g, circle1.fill.b, circle1.alpha);
     ellipse(circle1.x, circle1.y, circle1.size);
     
     //Circle 2
     circle2.x = circle2.x + 1;
     circle2.y = circle2.y - 1;
-    circle2.x = constrain(circle2.x, 0, 200);
-    circle2.y = constrain(circle2.y, 300, 500);
+    circle2.x = constrain(circle2.x, 0, 200); //makes the circle stop at the near center of the canvas
+    circle2.y = constrain(circle2.y, 300, 500); //moves the circle diagonally
     circle2.size = circle2.size + 0.25;
     circle2.size = constrain(circle2.size, 0, 150);
-    circle2.fill.r = map(mouseY,0,width,0,255);
+    circle2.fill.r = map(mouseY,0,width,0,255); //changes the shade of the circle when the mouse moves
     fill(circle2.fill.r, circle2.fill.g, circle2.fill.b, circle2.alpha);
     ellipse(circle2.x, circle2.y, circle2.size);
 
     //Circle 3
     circle3.x = circle3.x - 1;
     circle3.y = circle3.y - 1;
-    circle3.x = constrain(circle3.x, 300, 500);
-    circle3.y = constrain(circle3.y, 300, 500);
+    circle3.x = constrain(circle3.x, 300, 500); //makes the circle stop at the near center of the canvas
+    circle3.y = constrain(circle3.y, 300, 500); //moves the circle diagonally
     circle3.size = circle3.size + 0.25;
     circle3.size = constrain(circle3.size, 0, 150);
-    circle3.fill.g = map(mouseX+mouseY,0,width,0,255);
+    circle3.fill.g = map(mouseX+mouseY,0,width,0,255); //changes the shade of the circle when the mouse moves
     fill(circle3.fill.r, circle3.fill.g, circle3.fill.b, circle3.alpha);
     ellipse(circle3.x, circle3.y, circle3.size);
 
