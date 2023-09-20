@@ -2,8 +2,9 @@
  * I Like To Move It
  * Nicole Covaliu
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * A short animation of three circles converging at the center of the
+   canvas to form a Venn Diagram. The colours of the circle change when
+   the mouse moves.
  */
 
 "use strict";
@@ -14,13 +15,14 @@
 function preload() {
 
 }
-
+//Background object+properties
 let bg = {
     r: 0,
     g: 0,
     b: 0
 }
 
+//Circle 1 object+properties
 let circle1 = {
     x: 250,
     y: 0,
@@ -33,6 +35,7 @@ let circle1 = {
     alpha: 140
 }
 
+//Circle 2 object+properties
 let circle2 = {
     x: 0,
     y: 500,
@@ -45,6 +48,7 @@ let circle2 = {
     alpha: 160
 }
 
+//Circle 3 object+properties
 let circle3 = {
     x: 500,
     y: 500,
