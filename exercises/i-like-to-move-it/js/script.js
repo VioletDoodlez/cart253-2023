@@ -78,8 +78,10 @@ function draw() {
     background(bg.r,bg.g,bg.b);
     
     //Circle 1
+    //moves the circle vertically downwards
     circle1.y = circle1.y + 1;
-    circle1.y = constrain(circle1.y, 0, 210); //makes the circle stop at the near center of the canvas
+    circle1.y = constrain(circle1.y, 0, 210); //makes the circle stop near the center of the canvas
+    //enlarges the circle
     circle1.size = circle1.size + 0.25;
     circle1.size = constrain(circle1.size, 0, 150);
     circle1.fill.b = map(mouseX,0,width,0,255); //changes the shade of the circle when the mouse moves
@@ -87,10 +89,12 @@ function draw() {
     ellipse(circle1.x, circle1.y, circle1.size);
     
     //Circle 2
+    //moves the circle diagonally from bottom left to center
     circle2.x = circle2.x + 1;
     circle2.y = circle2.y - 1;
-    circle2.x = constrain(circle2.x, 0, 200); //makes the circle stop at the near center of the canvas
-    circle2.y = constrain(circle2.y, 300, 500); //moves the circle diagonally
+    circle2.x = constrain(circle2.x, 0, 200); //makes the circle stop near the center of the canvas
+    circle2.y = constrain(circle2.y, 300, 500);
+    //enlarges the circle
     circle2.size = circle2.size + 0.25;
     circle2.size = constrain(circle2.size, 0, 150);
     circle2.fill.r = map(mouseY,0,width,0,255); //changes the shade of the circle when the mouse moves
@@ -98,10 +102,12 @@ function draw() {
     ellipse(circle2.x, circle2.y, circle2.size);
 
     //Circle 3
+    //moves the circle diagonally from bottom right to center
     circle3.x = circle3.x - 1;
     circle3.y = circle3.y - 1;
-    circle3.x = constrain(circle3.x, 300, 500); //makes the circle stop at the near center of the canvas
-    circle3.y = constrain(circle3.y, 300, 500); //moves the circle diagonally
+    circle3.x = constrain(circle3.x, 300, 500); //makes the circle stop near the center of the canvas
+    circle3.y = constrain(circle3.y, 300, 500);
+    //enlarges the circle
     circle3.size = circle3.size + 0.25;
     circle3.size = constrain(circle3.size, 0, 150);
     circle3.fill.g = map(mouseX+mouseY,0,width,0,255); //changes the shade of the circle when the mouse moves
