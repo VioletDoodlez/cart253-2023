@@ -23,8 +23,8 @@ let ball = {
 }
 
 let user = {
-  x: 0,
-  y: 0,
+  x: 150,
+  y: 150,
   size: 100,
   fill: {
     r: 90,
@@ -61,8 +61,7 @@ function setup() {
 function draw() {
   background(90, 255, 90);
 
-  //hole
-  image(holeImage, width/2 - 75, height/2 - 75, 150, 150);
+     image(holeImage, width/2 - 75, height/2 - 75, 150, 150);
 
   //user
 
@@ -77,18 +76,22 @@ function draw() {
     ball.x = 0;
     ball.y = random(0, height);
   }
-  if (ball.x < 0) {
-    ball.x = width;
-    ball.y = random(0, height);
+  else {
+    if (ball.x < 0) {
+      ball.x = width;
+      ball.y = random(0, height);
+    }
   }
 
   if (ball.y > height) {
     ball.x = random(0, width);
     ball.y = 0;
   }
-  if (ball.y < 0) {
-    ball.x = random(0, width);
-    ball.y = height;
+  else {
+    if (ball.y < 0) {
+      ball.x = random(0, width);
+      ball.y = height;
+    }
   }
 
   fill(ball.fill.r, ball.fill.g, ball.fill.b);
