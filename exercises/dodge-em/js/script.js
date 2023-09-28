@@ -2,8 +2,8 @@
  * Dodge Em
  * Nicole Covaliu
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * Reverse Golf simulation where you protect
+ * the goal (hole) from the ball.
  */
 
 "use strict";
@@ -14,7 +14,7 @@ let ball = {
   size: 100,
   vx: 0,
   vy: 0,
-  speed: 3,
+  speed: 8,
   fill: {
     r: 230,
     g: 230,
@@ -61,14 +61,14 @@ function setup() {
 function draw() {
   background(90, 255, 90);
 
-     image(holeImage, width/2 - 75, height/2 - 75, 150, 150);
+     image(holeImage, width/2 - 300, height/2 - 300, 600, 600);
 
   //user
 
   fill(user.fill.r, user.fill.g,user.fill.b);
   ellipse(user.x, user.y, user.size);
 
-  //covid
+  //ball
   ball.x = ball.x + ball.vx;
   ball.y = ball.y + ball.vy;
   
@@ -98,17 +98,17 @@ function draw() {
   noStroke();
   ellipse(ball.x, ball.y, ball.size);
 
-  //catching covid
+  //distance
   let d = dist(ball.x, ball.y, user.x, user.y);
 
-  if (d <= ball.size/2 + user.size/2) {
+  if (d <= ball.size/2 + user.size/2) { //makes the ball bounce off the user when coming into contact
       ball.vx = -ball.vx;
       ball.vy = -ball.vy;
   }
 
   let ch = dist(ball.x, ball.y, width/2, height/2);
 
-  if (ch < 25){
+  if (ch < 120){
     noLoop();
   }
 }
