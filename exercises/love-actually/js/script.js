@@ -73,6 +73,16 @@ function title() { //displays title screen until clicked
     fill(200,100,100);
     textAlign(CENTER,CENTER);
     text(`Can You Escape?`,width/2,height/2);
+
+    textSize(24);
+    fill(200,100,100);
+    textAlign(CENTER,CENTER);
+    text(`Use the arrow keys to escape the monster`,width/2,360);
+
+    textSize(24);
+    fill(200,100,100);
+    textAlign(CENTER,CENTER);
+    text(`Press any key to start`,width/2,390);
     pop();
 }
 
@@ -149,21 +159,21 @@ function move() {
     monster.y = monster.y + monster.vy;
 }
 
-function checkOffScreen() {
+function checkOffScreen() { //allows the simulation the end when the user moves offscreen
     if (user.x < 0 || user.x > width || user.y < 0 || user.y > height || monster.x < 0 || monster.x > width || monster.y < 0 || monster.y > height) {
         state = `escape`;
     }
     
 }
 
-function checkOverlap() {
-    let d = dist(user.x, user.y, monster.x, monster.y); //makes sure the circles collide before showing ending
+function checkOverlap() { //allows the circles collide before showing ending
+    let d = dist(user.x, user.y, monster.x, monster.y); //distance between circles
     if (d < user.size/2 +monster.size/2) {
-        state = `caught`;
+        state = `caught`; //end simulation
     }
 }
 
-function display() {
+function display() { //displays shapes
     //user
     fill(255);
     ellipse(user.x, user.y, user.size);
@@ -177,11 +187,21 @@ function keyPressed() { //starts simulation when key is pressed
     if (state === `title`) {
         state = `simulation`;
     }
+    else if (state === `caught`) {
+        reset();
+        state = `simulation`;
+    }
+    
+    //if (state === `escape`) {
+      //  state === `simulation`;
+    //}
 }
 
-/**function reset() {
-    circle.x = circle.x;
-    circle.y = circle.y;
-    circle.vx = random(-10,10);
-    circle.vy = random(-10,10);
-}*/
+function reset() {
+    user.x = random(0, width);
+    user.y = random(0, height);
+    monster.x = random(0, width);
+    monster.y = random(0, height);
+
+    //looks at loops beond counting, danger zone
+}
