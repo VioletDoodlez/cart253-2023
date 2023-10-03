@@ -1,6 +1,6 @@
 /**
- * Title of Project
- * Author Name
+ * Love Actually
+ * Nicole Covaliu
  * 
  * This is a template. You must fill in the title, author, 
  * and this description to match your project!
@@ -8,7 +8,7 @@
 
 "use strict";
 
-let circle1 = {
+let user = {
     x: 200,
     y: 300,
     size: 100,
@@ -17,13 +17,13 @@ let circle1 = {
     speed: 5
 }
 
-let circle2 = {
+let monster = {
     x: 400,
     y: 300,
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 5
+    speed: 3
 }
 
 let state = `title`;
@@ -41,10 +41,9 @@ function preload() {
 */
 function setup() {
     createCanvas(600, 600);
-    circle1.vx = random(-circle1.speed, circle1.speed);
-    circle1.vy = random(-circle1.speed, circle1.speed);
-    circle2.vx = random(-circle2.speed, circle2.speed);
-    circle2.vy = random(-circle2.speed, circle2.speed);
+    
+    monster.x = random(0, width);
+    monster.y = random(0, height);
 }
 
 
@@ -60,20 +59,20 @@ function draw() {
     else if (state === `simulation`) {
         simulation();
     }
-    else if (state === `love`) {
-        love();
+    else if (state === `caught`) {
+        caught();
     }
-    else if (state === `sadness`) {
-        sadness();
+    else if (state === `escape`) {
+        escape();
     }
 }
 
-function title() {
+function title() { //displays title screen until clicked
     push();
     textSize(64);
     fill(200,100,100);
     textAlign(CENTER,CENTER);
-    text(`LOVE?`,width/2,height/2);
+    text(`Can You Escape?`,width/2,height/2);
     pop();
 }
 
@@ -84,59 +83,97 @@ function simulation() {
     display();
 }
 
-function love() {
-    push();
-    textSize(64);
-    fill(255,150,150);
-    textAlign(CENTER,CENTER);
-    text(`LOVE!`,width/2,height/2);
-    pop();
-}
-
-function sadness() {
+function caught() { //end simulation when circles collide
     push();
     textSize(64);
     fill(150,150,255);
     textAlign(CENTER,CENTER);
-    text(`:(`,width/2,height/2);
+    text(`CAUGHT.`,width/2,height/2);
+    pop();
+}
+
+function escape() {
+    push();
+    textSize(64);
+    fill(255,150,150);
+    textAlign(CENTER,CENTER);
+    text(`FREEDOM!`,width/2,height/2);
     pop();
 }
 
 function move() {
-    //circle1 speed
-    circle1.x = circle1.x + circle1.vx;
-    circle1.y = circle1.y + circle1.vy;
+    //allows user move with arrow keys
+    if (keyIsDown (LEFT_ARROW)) {
+        user.vx = -user.speed;
+    }
+    else if (keyIsDown (RIGHT_ARROW)) {
+        user.vx = user.speed;
+    }
+    else {
+        user.vx = 0
+    }
 
-    //circle2 speed
-    circle2.x = circle2.x + circle2.vx;
-    circle2.y = circle2.y + circle2.vy;
+    if (keyIsDown(UP_ARROW)) {
+        user.vy = -user.speed;
+    }
+    else if (keyIsDown (DOWN_ARROW)) {
+        user.vy = user.speed;
+    }
+    else {
+        user.vy = 0;
+    }
+
+    user.x = user.x + user.vx;
+    user.y = user.y + user.vy;
+
+    //allows monster to follow user
+
+    let dx = monster.x - user.x;
+    let dy = monster.y - user.y;
+
+    if (dx < 0) {
+        monster.vx = monster.speed;
+    }
+    else if (dx > 0) {
+        monster.vx = -monster.speed;
+    }
+
+    if (dy < 0) {
+        monster.vy = monster.speed;
+    }
+    else if (dy > 0) {
+        monster.vy = -monster.speed;
+    }
+
+    monster.x = monster.x + monster.vx;
+    monster.y = monster.y + monster.vy;
 }
 
 function checkOffScreen() {
-    if (circle1.x < 0 || circle1.x > width || circle1.y < 0 || circle1.y > height || circle2.x < 0 || circle2.x > width || circle2.y < 0 || circle2.y > height) {
-        state = `sadness`;
+    if (user.x < 0 || user.x > width || user.y < 0 || user.y > height || monster.x < 0 || monster.x > width || monster.y < 0 || monster.y > height) {
+        state = `escape`;
     }
     
 }
 
 function checkOverlap() {
-    let d = dist(circle1.x, circle1.y, circle2.x, circle2.y);
-    if (d < circle1.size/2 +circle2.size/2) {
-        state = `love`;
+    let d = dist(user.x, user.y, monster.x, monster.y); //makes sure the circles collide before showing ending
+    if (d < user.size/2 +monster.size/2) {
+        state = `caught`;
     }
 }
 
 function display() {
-    //circle1
+    //user
     fill(255);
-    ellipse(circle1.x, circle1.y, circle1.size);
+    ellipse(user.x, user.y, user.size);
 
-    //circle2
+    //monster
     fill(255);
-    ellipse(circle2.x, circle2.y, circle2.size);
+    ellipse(monster.x, monster.y, monster.size);
 }
 
-function mousePressed() {
+function keyPressed() { //starts simulation when key is pressed
     if (state === `title`) {
         state = `simulation`;
     }
