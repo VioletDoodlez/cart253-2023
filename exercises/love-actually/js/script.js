@@ -23,7 +23,13 @@ let monster = {
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 3
+    speed: 2.5
+}
+
+let secret = {
+    x: undefined,
+    y: undefined,
+    size: 5
 }
 
 let state = `title`;
@@ -32,7 +38,7 @@ let state = `title`;
  * Description of preload
 */
 function preload() {
-
+    //spookyImage = loadImage("assets/images/alternate.png")
 }
 
 
@@ -44,6 +50,10 @@ function setup() {
     
     monster.x = random(0, width);
     monster.y = random(0, height);
+
+    secret.x = random(0, width);
+    secret.y = random(0, height);
+
 }
 
 
@@ -168,6 +178,8 @@ function move() {
 
     monster.x = monster.x + monster.vx;
     monster.y = monster.y + monster.vy;
+
+    //change secret location every round
     pop();
 }
 
@@ -193,6 +205,10 @@ function display() { //displays shapes
     //monster
     fill(0,255,0);
     ellipse(monster.x, monster.y, monster.size);
+
+    //secret
+    fill(255,0,0);
+    ellipse(secret.x,secret.y,secret.size);
 }
 
 function keyPressed() { //starts simulation when key is pressed
@@ -210,13 +226,17 @@ function keyPressed() { //starts simulation when key is pressed
 }
 
 function reset() {
-    push();
     //user position resets to a random location after every game
     user.x = random(0, width);
     user.y = random(0, height);
     //monster position resets to a random location after every game 
     monster.x = random(0, width);
     monster.y = random(0, height);
+
+    //secret position resets to a random location after every game
+    secret.x = random(0, width);
+    secret.y = random(0, height);
+
 
     let sd = dist(user.x, user.y, monster.x, monster.y); //determines the spawning distance
 
@@ -226,5 +246,4 @@ function reset() {
 
         sd = dist(user.x, user.y, monster.x, monster.y);
     }
-    pop();
 }
