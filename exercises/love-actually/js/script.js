@@ -14,7 +14,7 @@ let user = {
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 3
+    speed: 4
 }
 
 let monster = {
@@ -23,13 +23,7 @@ let monster = {
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 2
-}
-
-let skull = {
-    x: undetermined,
-    y: undetermined,
-    size: 10,
+    speed: 3
 }
 
 let state = `title`;
@@ -71,9 +65,6 @@ function draw() {
     else if (state === `escape`) {
         escape();
     }
-    else if (state === `spook`) {
-        spook();
-    }
 }
 
 function title() { //displays title screen until clicked
@@ -102,7 +93,7 @@ function simulation() {
     display();
 }
 
-function caught() { //losing screen when circles collide
+function caught() { //end simulation when circles collide
     push();
     textSize(64);
     fill(150,150,255);
@@ -127,30 +118,6 @@ function escape() { //victory screen when user is offscreen
     fill(255,150,150);
     textAlign(CENTER,CENTER);
     text(`Press any key to continue`,width/2,360);
-    pop();
-}
-
-function spook() {
-    push();
-    textSize(64);
-    fill(255,150,150);
-    textAlign(CENTER,CENTER);
-    text(`NO ESCAPE`,width/2,height/2);
-
-    textSize(24);
-    fill(255,150,150);
-    textAlign(CENTER,CENTER);
-    text(`NO ESCAPE`,width/2,360);
-
-    textSize(64);
-    fill(255,150,150);
-    textAlign(CENTER,CENTER);
-    text(`NO ESCAPE`,width/2,340);
-
-    textSize(24);
-    fill(255,150,150);
-    textAlign(CENTER,CENTER);
-    text(`NO ESCAPE`,width/2,320);
     pop();
 }
 
@@ -213,13 +180,8 @@ function checkOffScreen() { //allows the simulation the end when the user moves 
 
 function checkOverlap() { //allows the circles collide before showing ending
     let d = dist(user.x, user.y, monster.x, monster.y); //distance between circles
-    if (d < user.size/2 + monster.size/2) {
+    if (d < user.size/2 +monster.size/2) {
         state = `caught`; //end simulation
-    }
-
-    let s = dist(user.x, user.y, skull.x, skull.y); //distance between user and skull
-    if (s < user.size/2 + skull/2) {
-        state = `spook`; //secret ending
     }
 }
 
@@ -229,12 +191,8 @@ function display() { //displays shapes
     ellipse(user.x, user.y, user.size);
 
     //monster
-    fill(100,200,100);
+    fill(0,255,0);
     ellipse(monster.x, monster.y, monster.size);
-
-    //secret
-    fill(255,0,0);
-    ellipse(skull.x, skull.y, skull.size);
 }
 
 function keyPressed() { //starts simulation when key is pressed
@@ -252,6 +210,7 @@ function keyPressed() { //starts simulation when key is pressed
 }
 
 function reset() {
+    push();
     //user position resets to a random location after every game
     user.x = random(0, width);
     user.y = random(0, height);
@@ -259,10 +218,13 @@ function reset() {
     monster.x = random(0, width);
     monster.y = random(0, height);
 
-    while (d < user.size + monster.size) { //if the diameter of both circles combined is bigger than the spawning distance, the monster is moved elsewhere
+    let sd = dist(user.x, user.y, monster.x, monster.y); //determines the spawning distance
+
+    while (sd < user.size + monster.size) { //if the diameter of both circles combined is bigger than the spawning distance, the monster is moved elsewhere
         monster.x = random(0, width);
         monster.y = random(0, height);
 
-        d = dist(user.x, user.y, monster.x, monster.y);
+        sd = dist(user.x, user.y, monster.x, monster.y);
     }
+    pop();
 }
