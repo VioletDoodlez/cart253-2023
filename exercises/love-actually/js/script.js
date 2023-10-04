@@ -11,7 +11,7 @@
 let user = {
     x: 200,
     y: 300,
-    size: 100,
+    size: 150,
     vx: 0,
     vy: 0,
     speed: 4
@@ -20,7 +20,7 @@ let user = {
 let monster = {
     x: 400,
     y: 300,
-    size: 100,
+    size: 150,
     vx: 0,
     vy: 0,
     speed: 2.5
@@ -32,13 +32,15 @@ let secret = {
     size: 5
 }
 
+let spookyImage;
+
 let state = `title`;
 
 /**
  * Description of preload
 */
 function preload() {
-    //spookyImage = loadImage("assets/images/alternate.png")
+    spookyImage = loadImage("assets/images/alternate.png")
 }
 
 
@@ -46,7 +48,7 @@ function preload() {
  * Description of setup
 */
 function setup() {
-    createCanvas(600, 600);
+    createCanvas(windowWidth,windowHeight);
     
     monster.x = random(0, width);
     monster.y = random(0, height);
@@ -75,24 +77,27 @@ function draw() {
     else if (state === `escape`) {
         escape();
     }
+    else if (state === `spook`) {
+        spook();
+    }
 }
 
 function title() { //displays title screen until clicked
     push();
-    textSize(64);
+    textSize(94);
     fill(200,100,100);
     textAlign(CENTER,CENTER);
     text(`Can You Escape?`,width/2,height/2);
 
-    textSize(24);
+    textSize(54);
     fill(200,100,100);
     textAlign(CENTER,CENTER);
-    text(`Use the arrow keys to escape the monster`,width/2,360);
+    text(`Use the arrow keys to escape the monster`,width/2, 2*height/3);
 
-    textSize(24);
+    textSize(54);
     fill(200,100,100);
     textAlign(CENTER,CENTER);
-    text(`Press any key to start`,width/2,390);
+    text(`Press any key to start`,width/2, 2*height/3 + 50);
     pop();
 }
 
@@ -105,30 +110,39 @@ function simulation() {
 
 function caught() { //end simulation when circles collide
     push();
-    textSize(64);
+    textSize(94);
     fill(150,150,255);
     textAlign(CENTER,CENTER);
     text(`CAUGHT.`,width/2,height/2);
 
-    textSize(24);
+    textSize(54);
     fill(150,150,255);
     textAlign(CENTER,CENTER);
-    text(`Press any key to restart`,width/2,360);
+    text(`Press any key to restart`,width/2, 2*height/3);
     pop();
 }
 
 function escape() { //victory screen when user is offscreen
     push();
-    textSize(64);
+    textSize(94);
     fill(255,150,150);
     textAlign(CENTER,CENTER);
     text(`FREEDOM!`,width/2,height/2);
 
-    textSize(24);
+    textSize(54);
     fill(255,150,150);
     textAlign(CENTER,CENTER);
-    text(`Press any key to continue`,width/2,360);
+    text(`Press any key to continue`,width/2, 2*height/3);
     pop();
+}
+
+function spook() {
+    background(spookyImage);
+
+    textSize(250);
+    fill(255,0,0);
+    textAlign(CENTER,CENTER);
+    text(`NO ESCAPE`,width/2,height/2);
 }
 
 function move() {
@@ -192,8 +206,13 @@ function checkOffScreen() { //allows the simulation the end when the user moves 
 
 function checkOverlap() { //allows the circles collide before showing ending
     let d = dist(user.x, user.y, monster.x, monster.y); //distance between circles
-    if (d < user.size/2 +monster.size/2) {
+    if (d < user.size/2 + monster.size/2) {
         state = `caught`; //end simulation
+    }
+
+    let s = dist(user.x, user.y, secret.x, secret.y);
+    if (s < user.size/2 + secret.size/2) {
+        state = `spook`;
     }
 }
 
@@ -203,7 +222,7 @@ function display() { //displays shapes
     ellipse(user.x, user.y, user.size);
 
     //monster
-    fill(0,255,0);
+    fill(150,255,150);
     ellipse(monster.x, monster.y, monster.size);
 
     //secret
