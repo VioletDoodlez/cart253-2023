@@ -2,8 +2,8 @@
  * Love Actually
  * Nicole Covaliu
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * Escape game where a monster (green circle) follows the user.
+ * the objective is the escape by making it offscreen.
  */
 
 "use strict";
@@ -14,7 +14,7 @@ let user = {
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 5
+    speed: 3
 }
 
 let monster = {
@@ -23,7 +23,13 @@ let monster = {
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 3
+    speed: 2
+}
+
+let skull = {
+    x: undetermined,
+    y: undetermined,
+    size: 10,
 }
 
 let state = `title`;
@@ -65,6 +71,9 @@ function draw() {
     else if (state === `escape`) {
         escape();
     }
+    else if (state === `spook`) {
+        spook();
+    }
 }
 
 function title() { //displays title screen until clicked
@@ -93,21 +102,55 @@ function simulation() {
     display();
 }
 
-function caught() { //end simulation when circles collide
+function caught() { //losing screen when circles collide
     push();
     textSize(64);
     fill(150,150,255);
     textAlign(CENTER,CENTER);
     text(`CAUGHT.`,width/2,height/2);
+
+    textSize(24);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`Press any key to restart`,width/2,360);
     pop();
 }
 
-function escape() {
+function escape() { //victory screen when user is offscreen
     push();
     textSize(64);
     fill(255,150,150);
     textAlign(CENTER,CENTER);
     text(`FREEDOM!`,width/2,height/2);
+
+    textSize(24);
+    fill(255,150,150);
+    textAlign(CENTER,CENTER);
+    text(`Press any key to continue`,width/2,360);
+    pop();
+}
+
+function spook() {
+    push();
+    textSize(64);
+    fill(255,150,150);
+    textAlign(CENTER,CENTER);
+    text(`NO ESCAPE`,width/2,height/2);
+
+    textSize(24);
+    fill(255,150,150);
+    textAlign(CENTER,CENTER);
+    text(`NO ESCAPE`,width/2,360);
+
+    textSize(64);
+    fill(255,150,150);
+    textAlign(CENTER,CENTER);
+    text(`NO ESCAPE`,width/2,340);
+
+    textSize(24);
+    fill(255,150,150);
+    textAlign(CENTER,CENTER);
+    text(`NO ESCAPE`,width/2,320);
     pop();
 }
 
@@ -138,6 +181,7 @@ function move() {
 
     //allows monster to follow user
 
+    push();
     let dx = monster.x - user.x;
     let dy = monster.y - user.y;
 
@@ -157,6 +201,7 @@ function move() {
 
     monster.x = monster.x + monster.vx;
     monster.y = monster.y + monster.vy;
+    pop();
 }
 
 function checkOffScreen() { //allows the simulation the end when the user moves offscreen
@@ -168,8 +213,13 @@ function checkOffScreen() { //allows the simulation the end when the user moves 
 
 function checkOverlap() { //allows the circles collide before showing ending
     let d = dist(user.x, user.y, monster.x, monster.y); //distance between circles
-    if (d < user.size/2 +monster.size/2) {
+    if (d < user.size/2 + monster.size/2) {
         state = `caught`; //end simulation
+    }
+
+    let s = dist(user.x, user.y, skull.x, skull.y); //distance between user and skull
+    if (s < user.size/2 + skull/2) {
+        state = `spook`; //secret ending
     }
 }
 
@@ -179,29 +229,40 @@ function display() { //displays shapes
     ellipse(user.x, user.y, user.size);
 
     //monster
-    fill(255);
+    fill(100,200,100);
     ellipse(monster.x, monster.y, monster.size);
+
+    //secret
+    fill(255,0,0);
+    ellipse(skull.x, skull.y, skull.size);
 }
 
 function keyPressed() { //starts simulation when key is pressed
     if (state === `title`) {
         state = `simulation`;
     }
-    else if (state === `caught`) {
+    else if (state === `escape`) { //continue simulation if escaped
         reset();
         state = `simulation`;
     }
-    
-    //if (state === `escape`) {
-      //  state === `simulation`;
-    //}
+    else if (state === `caught`) { //return to title screen if caught
+        reset();
+        state = `title`;
+    }
 }
 
 function reset() {
+    //user position resets to a random location after every game
     user.x = random(0, width);
     user.y = random(0, height);
+    //monster position resets to a random location after every game 
     monster.x = random(0, width);
     monster.y = random(0, height);
 
-    //looks at loops beond counting, danger zone
+    while (d < user.size + monster.size) { //if the diameter of both circles combined is bigger than the spawning distance, the monster is moved elsewhere
+        monster.x = random(0, width);
+        monster.y = random(0, height);
+
+        d = dist(user.x, user.y, monster.x, monster.y);
+    }
 }
