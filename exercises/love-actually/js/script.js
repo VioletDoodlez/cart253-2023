@@ -136,7 +136,7 @@ function escape() { //victory screen when user is offscreen
     pop();
 }
 
-function spook() {
+function spook() { //secret ending if user touches secret
     background(spookyImage);
 
     textSize(250);
@@ -192,8 +192,6 @@ function move() {
 
     monster.x = monster.x + monster.vx;
     monster.y = monster.y + monster.vy;
-
-    //change secret location every round
     pop();
 }
 
@@ -205,14 +203,14 @@ function checkOffScreen() { //allows the simulation the end when the user moves 
 }
 
 function checkOverlap() { //allows the circles collide before showing ending
-    let d = dist(user.x, user.y, monster.x, monster.y); //distance between circles
+    let d = dist(user.x, user.y, monster.x, monster.y); //distance between user and monster
     if (d < user.size/2 + monster.size/2) {
         state = `caught`; //end simulation
     }
 
-    let s = dist(user.x, user.y, secret.x, secret.y);
+    let s = dist(user.x, user.y, secret.x, secret.y); //distance between user and secret
     if (s < user.size/2 + secret.size/2) {
-        state = `spook`;
+        state = `spook`; //end simulation
     }
 }
 
