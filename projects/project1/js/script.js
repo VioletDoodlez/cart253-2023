@@ -8,22 +8,25 @@
 
 "use strict";
 
-/*let user = {
+let bug = {
     x: 250,
     y: 250,
-    size: 150,
+    size: 50,
     fill: 255,
     vx: 0,
     vy: 0,
     speed: 2
-}*/
+}
 
 let caterpillar = {
-    x: 100,
+    x: 250,
     y: 250,
     totalSegments: 10,
     segmentSize: 100,
     segmentSpacing: 70,
+    vx: 0,
+    vy: 0,
+    segmentSpeed: 3
 }
 
 
@@ -63,64 +66,61 @@ function draw() {
 
         segmentsDrawn = segmentsDrawn + 1;
     }
-    //move ();
-    //display();
+    move ();
+    display();
 }
 
 
 
-/*function move() {
-    // user mouvement
-    if (keyIsDown (LEFT_ARROW)) {
-        user.vx = -user.speed;
+function move() {
+    // bug mouvement
+    let dx = bug.x - caterpillar.x;
+    let dy = bug.y - caterpillar.y;
+
+    if (dx < 0) {
+        bug.vx = -bug.speed;
     }
-    else if (keyIsDown (RIGHT_ARROW)) {
-        user.vx = user.speed;
-    }
-    else {
-        user.vx = 0;
+    else if (dx > 0) {
+        bug.vx = bug.speed;
     }
 
-    if (keyIsDown (UP_ARROW)) {
-        user.vy = -user.speed;
+    if (dy < 0) {
+        bug.vy = -bug.speed;
     }
-    else if (keyIsDown (DOWN_ARROW)) {
-        user.vy = user.speed;
-    }
-    else {
-        user.vy = 0;
+    else if (dy > 0) {
+        bug.vy = bug.speed;
     }
 
-    user.x = user.x + user.vx;
-    user.y = user.y + user.vy;
+    bug.x = bug.x + bug.vx;
+    bug.y = bug.y + bug.vy;
 
     // caterpillar mouvement
     if (keyIsDown (LEFT_ARROW)) {
-        user.vx = -user.speed;
+        caterpillar.vx = -caterpillar.segmentSpeed;
     }
     else if (keyIsDown (RIGHT_ARROW)) {
-        user.vx = user.speed;
+        caterpillar.vx = caterpillar.segmentSpeed;
     }
     else {
-        user.vx = 0;
+        caterpillar.vx = 0;
     }
 
     if (keyIsDown (UP_ARROW)) {
-        user.vy = -user.speed;
+        caterpillar.vy = -caterpillar.segmentSpeed;
     }
     else if (keyIsDown (DOWN_ARROW)) {
-        user.vy = user.speed;
+        caterpillar.vy = caterpillar.segmentSpeed;
     }
     else {
-        user.vy = 0;
+        caterpillar.vy = 0;
     }
 
-    user.x = user.x + user.vx;
-    user.y = user.y + user.vy;
+    caterpillar.x = caterpillar.x + caterpillar.vx;
+    caterpillar.y = caterpillar.y + caterpillar.vy;
 }
 
 function display() {
-    //displays user
-    fill(user.fill);
-    ellipse(user.x, user.y, user.size);
-}*/
+    //displays bug
+    fill(bug.fill);
+    ellipse(bug.x, bug.y, bug.size);
+}
