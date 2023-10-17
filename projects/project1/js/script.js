@@ -15,7 +15,7 @@ let bug = {
     fill: 255,
     vx: 0,
     vy: 0,
-    speed: 3
+    speed: 1
 }
 
 let spider = {
@@ -24,7 +24,7 @@ let spider = {
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 5
+    speed: 4
 }
 
 let state = `title`
@@ -46,6 +46,9 @@ function setup() {
 
     bug.vx = random(-bug.speed, bug.speed);
     bug.vy = random(-bug.speed, bug.speed);
+
+    spider.vx = random(-spider.speed, spider.speed);
+    spider.vy = random(-spider.speed, spider.speed);
 }
 
 
@@ -84,6 +87,11 @@ function title() {
     fill(150,150,255);
     textAlign(CENTER,CENTER);
     text(`You have a fly in your web. Don't let it escape!`,width/2, 2*height/3);
+
+    textSize(54);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`Press any button to start`,width/2, 2*height/3 + 50);
     pop();
 }
 
@@ -140,6 +148,7 @@ function fall() {
 
 function move() {
     // bug mouvement
+    push();
     let dx = bug.x - spider.x;
     let dy = bug.y - spider.y;
 
@@ -159,6 +168,7 @@ function move() {
 
     bug.x = bug.x + bug.vx;
     bug.y = bug.y + bug.vy;
+    pop();
     // spider mouvement
     if (keyIsDown (LEFT_ARROW)) {
         spider.vx = -spider.speed;
@@ -184,14 +194,6 @@ function move() {
     spider.y = spider.y + spider.vy;    
 }
 
-function display() {
-     //displays spider
-     fill(100, 200, 100);
-     ellipse(spider.x, spider.y, spider.size);
-     //displays bug
-     fill(bug.fill);
-     ellipse(bug.x, bug.y, bug.size);
-}
 
 function checkOverlap() {
     let d = dist(spider.x, spider.y, bug.x, bug.y)
@@ -211,18 +213,30 @@ function checkOffScreen() {
     }
 }
 
+function display() {
+     //displays spider
+     fill(100, 200, 100);
+     ellipse(spider.x, spider.y, spider.size);
+     //displays bug
+     fill(bug.fill);
+     ellipse(bug.x, bug.y, bug.size);
+}
+
 
 function keyPressed() {
     if (state === `title`) {
         state = `simulation`;
     }
     else if (state === `eat`) {
+        reset();
         state = `simulation`;
     }
     else if (state === `flee`) {
+        reset();
         state = `simulation`;
     }
     else if (state === `fall`) {
+        reset();
         state = `simulation`;
     }
 }
