@@ -27,7 +27,7 @@ let spider = {
     speed: 5
 }
 
-//let state = `title`
+let state = `title`
 
 
 /**
@@ -72,6 +72,22 @@ function draw() {
     }
 }
 
+
+function title() {
+    push();
+    textSize(94);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`Spider Web`,width/2,height/2);
+
+    textSize(54);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`You have a fly in your web. Don't let it escape!`,width/2, 2*height/3);
+    pop();
+}
+
+
 function simulation() {
     move();
     checkOffScreen();
@@ -80,23 +96,46 @@ function simulation() {
 }
 
 
+function eat() {
+    push();
+    textSize(94);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`You ate the bug!`,width/2,height/2);
 
-function checkOverlap() {
-    let d = dist(spider.x, spider.y, bug.x, bug.y)
-
-    if (d < spider.size/2 + bug.size/2) {
-        state = `eat`;
-    }
+    textSize(54);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`Press any key to restart`,width/2, 2*height/3);
+    pop();
 }
 
-function checkOffScreen() {
-    if (bug.x < 0 || bug.x > width || bug.y < 0 || bug.y > height) {
-        state = `flee`;
-    }
+function flee() {
+    push();
+    textSize(94);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`The bug flew away`,width/2,height/2);
 
-    if (spider.x < 0 || spider.x > width || spider.y < 0 || spider.y > height) {
-        state = `fall`;
-    }
+    textSize(54);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`Press any key to restart`,width/2, 2*height/3);
+    pop();
+}
+
+function fall() {
+    push();
+    textSize(94);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`You fell off the web!`,width/2,height/2);
+
+    textSize(54);
+    fill(150,150,255);
+    textAlign(CENTER,CENTER);
+    text(`Press any key to restart`,width/2, 2*height/3);
+    pop();
 }
 
 function move() {
@@ -118,6 +157,8 @@ function move() {
         bug.vy = bug.speed;
     }
 
+    bug.x = bug.x + bug.vx;
+    bug.y = bug.y + bug.vy;
     // spider mouvement
     if (keyIsDown (LEFT_ARROW)) {
         spider.vx = -spider.speed;
@@ -150,4 +191,46 @@ function display() {
      //displays bug
      fill(bug.fill);
      ellipse(bug.x, bug.y, bug.size);
+}
+
+function checkOverlap() {
+    let d = dist(spider.x, spider.y, bug.x, bug.y)
+
+    if (d < spider.size/2 + bug.size/2) {
+        state = `eat`;
+    }
+}
+
+function checkOffScreen() {
+    if (bug.x < 0 || bug.x > width || bug.y < 0 || bug.y > height) {
+        state = `flee`;
+    }
+
+    if (spider.x < 0 || spider.x > width || spider.y < 0 || spider.y > height) {
+        state = `fall`;
+    }
+}
+
+
+function keyPressed() {
+    if (state === `title`) {
+        state = `simulation`;
+    }
+    else if (state === `eat`) {
+        state = `simulation`;
+    }
+    else if (state === `flee`) {
+        state = `simulation`;
+    }
+    else if (state === `fall`) {
+        state = `simulation`;
+    }
+}
+
+function reset() {
+    spider.x = random(0, width);
+    spider.y = random(0, height);
+
+    bug.x = random(0, width);
+    bug.y = random(0, height);
 }
