@@ -14,7 +14,7 @@ let bug = {
     fill: 255,
     vx: 0,
     vy: 0,
-    speed: 1,
+    speed: 2,
     image: undefined,
     state: `calm` //calm or scared
 }
