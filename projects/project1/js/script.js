@@ -11,21 +11,26 @@
 let bug = {
     x: 250,
     y: 250,
-    size: 50,
+    size: 80,
     fill: 255,
     vx: 0,
     vy: 0,
-    speed: 1
+    speed: 1,
+    image: undefined,
+    //state: `calm` //calm or scared
 }
 
 let spider = {
     x: 250,
     y: 0,
-    size: 100,
+    size: 130,
     vx: 0,
     vy: 0,
-    speed: 4
+    speed: 4,
+    image: undefined
 }
+
+let spiderwebImage;
 
 let state = `title`
 
@@ -34,7 +39,10 @@ let state = `title`
  * Description of preload
 */
 function preload() {
-
+    //inserts images
+    bug.image = loadImage("assets/images/bug.png");
+    spider.image = loadImage("assets/images/spider.png");
+    spiderwebImage = loadImage("assets/images/spiderweb.jpeg");
 }
 
 
@@ -44,9 +52,11 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    //random starting position for bug
     bug.vx = random(-bug.speed, bug.speed);
     bug.vy = random(-bug.speed, bug.speed);
 
+    //random starting position for spider
     spider.vx = random(-spider.speed, spider.speed);
     spider.vy = random(-spider.speed, spider.speed);
 }
@@ -56,8 +66,6 @@ function setup() {
  * Description of draw()
 */
 function draw() {
-    background(0);
-
     if (state === `title`) {
         title();
     }
@@ -73,23 +81,32 @@ function draw() {
     else if (state === `fall`) {
         fall();
     }
+
+    /*let bd = dist(spider.x, spider.y, bug.x, bug.y);
+    if (d > widowWidth/2) {
+        bug.state = `calm`;
+    }
+    else {
+       bug.state = `scared`; 
+    }*/
 }
 
 
-function title() {
+function title() { //displays title screen when before simulation starts
     push();
+    background (0);
     textSize(94);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`Spider Web`,width/2,height/2);
 
     textSize(54);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`You have a fly in your web. Don't let it escape!`,width/2, 2*height/3);
 
     textSize(54);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`Press any button to start`,width/2, 2*height/3 + 50);
     pop();
@@ -97,6 +114,7 @@ function title() {
 
 
 function simulation() {
+    background(spiderwebImage, 0, 0);
     move();
     checkOffScreen();
     checkOverlap();
@@ -104,24 +122,26 @@ function simulation() {
 }
 
 
-function eat() {
+function eat() { //displays end screen when spider and bug overlap
     push();
+    background (0);
     textSize(94);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`You ate the bug!`,width/2,height/2);
 
     textSize(54);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`Press any key to restart`,width/2, 2*height/3);
     pop();
 }
 
-function flee() {
+function flee() { //displays end screen when bug is offscreen
     push();
+    background (0);
     textSize(94);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`The bug flew away`,width/2,height/2);
 
@@ -132,15 +152,16 @@ function flee() {
     pop();
 }
 
-function fall() {
+function fall() { //displays end screen when spider of offscreen
     push();
+    background (0);
     textSize(94);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`You fell off the web!`,width/2,height/2);
 
     textSize(54);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`Press any key to restart`,width/2, 2*height/3);
     pop();
@@ -149,6 +170,7 @@ function fall() {
 function move() {
     // bug mouvement
     push();
+
     let dx = bug.x - spider.x;
     let dy = bug.y - spider.y;
 
@@ -168,6 +190,8 @@ function move() {
 
     bug.x = bug.x + bug.vx;
     bug.y = bug.y + bug.vy;
+
+
     pop();
     // spider mouvement
     if (keyIsDown (LEFT_ARROW)) {
@@ -196,6 +220,7 @@ function move() {
 
 
 function checkOverlap() {
+    //ends simulation when spider and bug overlap
     let d = dist(spider.x, spider.y, bug.x, bug.y)
 
     if (d < spider.size/2 + bug.size/2) {
@@ -204,10 +229,12 @@ function checkOverlap() {
 }
 
 function checkOffScreen() {
+    //ends simulation when bug is offscreen
     if (bug.x < 0 || bug.x > width || bug.y < 0 || bug.y > height) {
         state = `flee`;
     }
 
+    //ends simulation when spider is offscreen
     if (spider.x < 0 || spider.x > width || spider.y < 0 || spider.y > height) {
         state = `fall`;
     }
@@ -215,15 +242,29 @@ function checkOffScreen() {
 
 function display() {
      //displays spider
-     fill(100, 200, 100);
-     ellipse(spider.x, spider.y, spider.size);
+     push();
+     imageMode(CENTER);
+     translate(spider.x, spider.y);
+     if (spider.vx > 0) {
+        scale(-1, 1);
+     }
+     image(spider.image, 0, 0, spider.size, spider.size);
+     pop();
      //displays bug
-     fill(bug.fill);
-     ellipse(bug.x, bug.y, bug.size);
+     //imageMode(CENTER);
+     push();
+     imageMode(CENTER);
+     translate(bug.x, bug.y);
+     if (bug.vx > 0) {
+        scale(-1, 1);
+     }
+     image(bug.image, 0, 0, bug.size, bug.size);
+     pop();
 }
 
 
 function keyPressed() {
+    //brings player from title screens back to simulation
     if (state === `title`) {
         state = `simulation`;
     }
@@ -242,9 +283,10 @@ function keyPressed() {
 }
 
 function reset() {
+    //random starting point for spider each reset
     spider.x = random(0, width);
     spider.y = random(0, height);
-
+    //random starting point for spider each reset
     bug.x = random(0, width);
     bug.y = random(0, height);
 }
