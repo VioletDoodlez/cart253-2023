@@ -17,7 +17,7 @@ let bug = {
     vy: 0,
     speed: 1,
     image: undefined,
-    //state: `calm` //calm or scared
+    state: `calm` //calm or scared
 }
 
 let spider = {
@@ -81,14 +81,6 @@ function draw() {
     else if (state === `fall`) {
         fall();
     }
-
-    /*let bd = dist(spider.x, spider.y, bug.x, bug.y);
-    if (d > widowWidth/2) {
-        bug.state = `calm`;
-    }
-    else {
-       bug.state = `scared`; 
-    }*/
 }
 
 
@@ -146,7 +138,7 @@ function flee() { //displays end screen when bug is offscreen
     text(`The bug flew away`,width/2,height/2);
 
     textSize(54);
-    fill(150,150,255);
+    fill(255,100,0);
     textAlign(CENTER,CENTER);
     text(`Press any key to restart`,width/2, 2*height/3);
     pop();
@@ -169,31 +161,50 @@ function fall() { //displays end screen when spider of offscreen
 
 function move() {
     // bug mouvement
+
+    let bd = dist(spider.x, spider.y, bug.x, bug.y); //check bug state
+    if (bd > width/2) {
+        bug.state = `calm`;
+    }
+    else {
+       bug.state = `scared`; 
+    }
+
     push();
-
-    let dx = bug.x - spider.x;
-    let dy = bug.y - spider.y;
-
-    if (dx < 0) {
-        bug.vx = -bug.speed;
+    //bug runs from spider when scared
+    if (bug.state === `scared`) {
+        let dx = bug.x - spider.x;
+        let dy = bug.y - spider.y;
+    
+        if (dx < 0) {
+            bug.vx = -bug.speed;
+        }
+        else if (dx > 0) {
+            bug.vx = bug.speed;
+        }
+    
+        if (dy < 0) {
+            bug.vy = -bug.speed;
+        }
+        else if (dy > 0) {
+            bug.vy = bug.speed;
+        }
+        bug.x = bug.x + bug.vx;
+        bug.y = bug.y + bug.vy;
     }
-    else if (dx > 0) {
-        bug.vx = bug.speed;
-    }
+    else if (bug.state === `calm`) { //bug moves at random when scared
+        let change = random();
 
-    if (dy < 0) {
-        bug.vy = -bug.speed;
-    }
-    else if (dy > 0) {
-        bug.vy = bug.speed;
-    }
-
-    bug.x = bug.x + bug.vx;
-    bug.y = bug.y + bug.vy;
-
-
+        if(change < 0.01) {
+            bug.vx = random(-bug.speed, bug.speed);
+            bug.vy = random(-bug.speed, bug.speed);
+        }
+        bug.x = bug.x + bug.vx;
+        bug.y = bug.y + bug.vy;
+    }    
     pop();
-    // spider mouvement
+
+    // spider mouvement, moves with arrow keys
     if (keyIsDown (LEFT_ARROW)) {
         spider.vx = -spider.speed;
     }
