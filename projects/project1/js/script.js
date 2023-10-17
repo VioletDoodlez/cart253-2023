@@ -2,8 +2,7 @@
  * Project 1
  * Nicole Covaliu
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * simulation where user plays as a spider trying to eat a bug
  */
 
 "use strict";
