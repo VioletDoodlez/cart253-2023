@@ -8,16 +8,14 @@
 
 "use strict";
 
-let user = {
+/*let user = {
     x: 0,
     y: 0,
     size: 100
-};
+};*/
 
-let food1;
-let food2;
-let food3;
-let food4;
+let school = [];
+let schoolSize = 4;
 
 /**
  * Description of preload
@@ -33,10 +31,22 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    food1 = createFood(50,300);
-    food2 = createFood(150,300);
-    food3 = createFood(250,300);
-    food4 = createFood(350,300);
+   for (let i = 0; i < schoolSize; i++) {
+        school[i] = createFish(random(0, width), random(0, height));
+   }
+}
+
+
+function createFish(x,y) {
+    let fish = {
+        x: x,
+        y: y,
+        size: 50,
+        vx: 0,
+        vy: 0,
+        speed: 2
+    };
+    return fish;
 }
 
 
@@ -46,56 +56,35 @@ function setup() {
 function draw() {
     background(0);
 
-    moveUser();
-
-    checkFood(food1);
-    checkFood(food2);
-    checkFood(food3);
-    checkFood(food4);
-
-    displayUser();
-    displayFood(food1);
-    displayFood(food2);
-    displayFood(food3);
-    displayFood(food4);
-}
-
-function moveUser() {
-    user.x = mouseX;
-    user.y = mouseY;
-}
-
-function checkFood(food) {
-    if (!food.eaten) {
-        let d = dist(user.x, user.y, food.x, food.y);
-        if (d < user.size / 2 + food.size / 2) {
-            food.eaten = true;
-        }
+    for (let i = 0; i < school.length; i++) {
+        moveFish(school[i]);
+        displayFish(school[i]);
     }
 }
 
-function displayUser() {
+function moveFish(fish) {
+    let change = random(0, 1);
+    if (change < 0.05) {
+        fish.vx = random(-fish.speed, fish.speed);
+        fish.vy = random(-fish.speed, fish.speed);
+    }
+
+    fish.x = fish.x + fish.vx;
+    fish.y = fish.y + fish.vy;
+
+    fish.x = constrain(fish.x, 0, width);
+    fish.y = constrain(fish.y, 0, height);
+}
+
+function displayFish(fish) { 
     push();
-    fill(255);
-    ellipse(user.x, user.y, user.size);
+    fill(200, 100, 100);
+    noStroke();
+    ellipse(fish.x, fish.y, fish.size);
     pop();
 }
 
-function createFood(x,y) {
-    let food = {
-        x: x,
-        y: y,
-        size: 50,
-        eaten: false
-    };
-    return food;
-}
-
-function displayFood(food) {
-    if (!food.eaten) {
-        push();
-        fill(255, 100, 100);
-        ellipse(food.x, food.y, food.size);
-        pop();
-    }
+function mousePressed() {
+    let fish = createFish(mouseX,mouseY);
+    school.push(fish);
 }
