@@ -14,7 +14,7 @@ let fish = {
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 2,
+    speed: 5,
     target: undefined
 };
 
@@ -36,6 +36,8 @@ function preload() {
 */
 function setup() {
     createCanvas(windowWidth, windowHeight);
+
+    //frameRate(30);
 
     fish.x = random(0, width);
     fish.y = random(0, height);
@@ -65,9 +67,39 @@ function createFood(x, y) {
  * Description of draw()
 */
 function draw() {
+    if (state === `title`) {
+        title();
+    }
+    else if (state === `simulation`) {
+        simulation();
+    }
+    else if (state === `full`) {
+        full();
+    }
+}
+
+function title() {
+    push();
     background(0);
+    textSize(94);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Aquarium`, width / 2, height / 2);
 
+    textSize(54);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Your fish is hungry! Use your mouse to feed him!`, width / 2, 2 * height / 3);
 
+    textSize(54);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Click to start`, width / 2, 2 * height / 3 + 50);
+    pop();
+}
+
+function simulation() {
+    background(0);
 
     for (let i = 0; i < diet.length; i++) {
         moveFood(diet[i]);
@@ -75,14 +107,31 @@ function draw() {
         checkFood(diet[i]);
     }
 
-    displayFish();
     moveFish();
+    checkFishSize();
+    displayFish();
 }
 
+function full() {
+    push();
+    background(0);
+    textSize(94);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Your fish is full!`, width / 2, height / 2);
 
-//function title()
-//function simulation()
-//function full()
+    textSize(54);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`He seems happy :)`, width / 2, 2 * height / 3);
+
+    textSize(54);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Click to return to title`, width / 2, 2 * height / 3 + 50);
+    pop();
+}
+
 //funtion hungry()
 
 function moveFish() {
@@ -155,12 +204,29 @@ function checkFood(food) {
         let foodIndex = diet.indexOf(food);
         diet.splice(foodIndex, 1);
         fish.size = fish.size + 5;
+        fish.speed = fish.speed - 0.;
         fish.target = random(diet);
     }
 
 }
 
+function checkFishSize() {
+    if (fish.size > 200) {
+        state = 'full';
+    }
+}
+
+/*function checkTime() {
+    if (frameCount > 30 || fish.target === undefined) {
+        state = `hungry`;
+    }
+}*/
+
 function mousePressed() {
+    if (state === `title`) {
+        state = `simulation`;
+    }
+
     let food = createFood(mouseX, mouseY);
     diet.push(food);
 
