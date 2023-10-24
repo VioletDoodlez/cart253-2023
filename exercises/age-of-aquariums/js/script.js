@@ -14,11 +14,14 @@ let fish = {
     size: 100,
     vx: 0,
     vy: 0,
-    speed: 2
+    speed: 2,
+    target: undefined
 };
 
 let diet = [];
 let dietSize = 4;
+
+let state = `title`
 
 /**
  * Description of preload
@@ -37,13 +40,15 @@ function setup() {
     fish.x = random(0, width);
     fish.y = random(0, height);
 
-   for (let i = 0; i < dietSize; i++) {
+    for (let i = 0; i < dietSize; i++) {
         diet[i] = createFood(random(0, width), random(0, height));
-   }
+    }
+
+    fish.target = random(diet);
 }
 
 
-function createFood(x,y) {
+function createFood(x, y) {
     let food = {
         x: x,
         y: y,
@@ -51,7 +56,6 @@ function createFood(x,y) {
         vx: 0,
         vy: 0,
         speed: 2,
-        eaten: false
     };
     return food;
 }
@@ -63,6 +67,8 @@ function createFood(x,y) {
 function draw() {
     background(0);
 
+
+
     for (let i = 0; i < diet.length; i++) {
         moveFood(diet[i]);
         displayFood(diet[i]);
@@ -70,25 +76,40 @@ function draw() {
     }
 
     displayFish();
-    //moveFish();
+    moveFish();
 }
 
+
+//function title()
+//function simulation()
+//function full()
+//funtion hungry()
+
 function moveFish() {
-    let dx = fish.x - food.x;
-    let dy = fish.y - food.y;
+    if (fish.target === undefined) {
+        let change = random(0, 1);
+        if (change < 0.05) {
+            fish.vx = random(-fish.speed, fish.speed);
+            fish.vy = random(-fish.speed, fish.speed);
+        }
+    }
+    else {
+        let dx = fish.x - fish.target.x;
+        let dy = fish.y - fish.target.y;
 
-    if (dx < 0) {
-        fish.vx = fish.speed;
-    }
-    else if (dx > 0) {
-        fish.vx = -fish.speed;
-    }
+        if (dx < 0) {
+            fish.vx = fish.speed;
+        }
+        else if (dx > 0) {
+            fish.vx = -fish.speed;
+        }
 
-    if (dy < 0) {
-        fish.vy = fish.speed;
-    }
-    else if (dy > 0) {
-        fish.vy = -fish.speed;
+        if (dy < 0) {
+            fish.vy = fish.speed;
+        }
+        else if (dy > 0) {
+            fish.vy = -fish.speed;
+        }
     }
 
     fish.x = fish.x + fish.vx;
@@ -119,26 +140,31 @@ function displayFish() {
     ellipse(fish.x, fish.y, fish.size);
 }
 
-function displayFood(food) { 
-    if (!food.eaten) {    push();
-        fill(200, 100, 100);
-        noStroke();
-        ellipse(food.x, food.y, food.size);
-        pop();
-    }
+function displayFood(food) {
+    push();
+    fill(200, 100, 100);
+    noStroke();
+    ellipse(food.x, food.y, food.size);
+    pop();
 }
 
 function checkFood(food) {
-    if (!food.eaten) {
-        let d = dist (fish.x, fish.y, food.x, food.y);
-        if (d < fish.size / 2 + food.size / 2) {
-            food.eaten = true;
-            fish.size = fish.size + 4;
-        }
+
+    let d = dist(fish.x, fish.y, food.x, food.y);
+    if (d < fish.size / 2 + food.size / 2) {
+        let foodIndex = diet.indexOf(food);
+        diet.splice(foodIndex, 1);
+        fish.size = fish.size + 5;
+        fish.target = random(diet);
     }
+
 }
 
 function mousePressed() {
-    let food = createFood(mouseX,mouseY);
+    let food = createFood(mouseX, mouseY);
     diet.push(food);
+
+    if (fish.target === undefined) {
+        fish.target = food;
+    }
 }
