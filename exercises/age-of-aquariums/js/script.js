@@ -8,14 +8,17 @@
 
 "use strict";
 
-/*let user = {
+let fish = {
     x: 0,
     y: 0,
-    size: 100
-};*/
+    size: 100,
+    vx: 0,
+    vy: 0,
+    speed: 2
+};
 
-let school = [];
-let schoolSize = 4;
+let diet = [];
+let dietSize = 4;
 
 /**
  * Description of preload
@@ -31,14 +34,14 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-   for (let i = 0; i < schoolSize; i++) {
-        school[i] = createFish(random(0, width), random(0, height));
+   for (let i = 0; i < dietSize; i++) {
+        diet[i] = createFood(random(0, width), random(0, height));
    }
 }
 
 
-function createFish(x,y) {
-    let fish = {
+function createFood(x,y) {
+    let food = {
         x: x,
         y: y,
         size: 50,
@@ -46,7 +49,7 @@ function createFish(x,y) {
         vy: 0,
         speed: 2
     };
-    return fish;
+    return food;
 }
 
 
@@ -56,35 +59,67 @@ function createFish(x,y) {
 function draw() {
     background(0);
 
-    for (let i = 0; i < school.length; i++) {
-        moveFish(school[i]);
-        displayFish(school[i]);
+    //moveFish();
+    //displayFish();
+
+    for (let i = 0; i < diet.length; i++) {
+        moveFood(diet[i]);
+        displayFood(diet[i]);
     }
 }
 
-function moveFish(fish) {
+function moveFood(food) {
     let change = random(0, 1);
     if (change < 0.05) {
-        fish.vx = random(-fish.speed, fish.speed);
-        fish.vy = random(-fish.speed, fish.speed);
+        food.vx = random(-food.speed, food.speed);
+        food.vy = random(-food.speed, food.speed);
+    }
+
+    food.x = food.x + food.vx;
+    food.y = food.y + food.vy;
+
+    food.x = constrain(food.x, 0, width);
+    food.y = constrain(food.y, 0, height);
+}
+
+function moveFish() {
+    let dx = fish.x - food.x;
+    let dy = fish.y - food.y;
+
+    if (dx < 0) {
+        fish.vx = fish.speed;
+    }
+    else if (dx > 0) {
+        fish.vx = -fish.speed;
+    }
+
+    if (dy < 0) {
+        fish.vy = fish.speed;
+    }
+    else if (dy > 0) {
+        fish.vy = -fish.speed;
     }
 
     fish.x = fish.x + fish.vx;
     fish.y = fish.y + fish.vy;
-
-    fish.x = constrain(fish.x, 0, width);
-    fish.y = constrain(fish.y, 0, height);
 }
 
-function displayFish(fish) { 
+function displayFish() {
+    push();
+    fill(255, 150, 0);
+    noStroke();
+    ellipse(fish.x, fish.y, fish.size);
+}
+
+function displayFood(food) { 
     push();
     fill(200, 100, 100);
     noStroke();
-    ellipse(fish.x, fish.y, fish.size);
+    ellipse(food.x, food.y, food.size);
     pop();
 }
 
 function mousePressed() {
-    let fish = createFish(mouseX,mouseY);
-    school.push(fish);
+    let food = createFood(mouseX,mouseY);
+    diet.push(food);
 }
