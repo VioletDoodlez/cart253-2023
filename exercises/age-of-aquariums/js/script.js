@@ -34,6 +34,9 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    fish.x = random(0, width);
+    fish.y = random(0, height);
+
    for (let i = 0; i < dietSize; i++) {
         diet[i] = createFood(random(0, width), random(0, height));
    }
@@ -47,7 +50,8 @@ function createFood(x,y) {
         size: 50,
         vx: 0,
         vy: 0,
-        speed: 2
+        speed: 2,
+        eaten: false
     };
     return food;
 }
@@ -59,27 +63,14 @@ function createFood(x,y) {
 function draw() {
     background(0);
 
-    //moveFish();
-    //displayFish();
-
     for (let i = 0; i < diet.length; i++) {
         moveFood(diet[i]);
         displayFood(diet[i]);
-    }
-}
-
-function moveFood(food) {
-    let change = random(0, 1);
-    if (change < 0.05) {
-        food.vx = random(-food.speed, food.speed);
-        food.vy = random(-food.speed, food.speed);
+        checkFood(diet[i]);
     }
 
-    food.x = food.x + food.vx;
-    food.y = food.y + food.vy;
-
-    food.x = constrain(food.x, 0, width);
-    food.y = constrain(food.y, 0, height);
+    displayFish();
+    //moveFish();
 }
 
 function moveFish() {
@@ -102,6 +93,23 @@ function moveFish() {
 
     fish.x = fish.x + fish.vx;
     fish.y = fish.y + fish.vy;
+
+    fish.x = constrain(fish.x, 0, width);
+    fish.y = constrain(fish.y, 0, height);
+}
+
+function moveFood(food) {
+    let change = random(0, 1);
+    if (change < 0.05) {
+        food.vx = random(-food.speed, food.speed);
+        food.vy = random(-food.speed, food.speed);
+    }
+
+    food.x = food.x + food.vx;
+    food.y = food.y + food.vy;
+
+    food.x = constrain(food.x, 0, width);
+    food.y = constrain(food.y, 0, height);
 }
 
 function displayFish() {
@@ -112,11 +120,22 @@ function displayFish() {
 }
 
 function displayFood(food) { 
-    push();
-    fill(200, 100, 100);
-    noStroke();
-    ellipse(food.x, food.y, food.size);
-    pop();
+    if (!food.eaten) {    push();
+        fill(200, 100, 100);
+        noStroke();
+        ellipse(food.x, food.y, food.size);
+        pop();
+    }
+}
+
+function checkFood(food) {
+    if (!food.eaten) {
+        let d = dist (fish.x, fish.y, food.x, food.y);
+        if (d < fish.size / 2 + food.size / 2) {
+            food.eaten = true;
+            fish.size = fish.size + 4;
+        }
+    }
 }
 
 function mousePressed() {
