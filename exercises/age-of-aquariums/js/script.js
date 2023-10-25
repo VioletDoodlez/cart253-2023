@@ -37,7 +37,7 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    //frameRate(30);
+    frameRate(30);
 
     fish.x = random(0, width);
     fish.y = random(0, height);
@@ -76,6 +76,9 @@ function draw() {
     else if (state === `full`) {
         full();
     }
+    else if (state === `hungry`) {
+        hungry();
+    }
 }
 
 function title() {
@@ -89,12 +92,12 @@ function title() {
     textSize(54);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Your fish is hungry! Use your mouse to feed him!`, width / 2, 2 * height / 3);
+    text(`Your fish is hungry! Feed him before the frame rate reaches 350`, width / 2, 2 * height / 3);
 
     textSize(54);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Click to start`, width / 2, 2 * height / 3 + 50);
+    text(`Click to start/feed your fish`, width / 2, 2 * height / 3 + 50);
     pop();
 }
 
@@ -109,7 +112,9 @@ function simulation() {
 
     moveFish();
     checkFishSize();
+    checkTime();
     displayFish();
+    displayTime();
 }
 
 function full() {
@@ -124,15 +129,21 @@ function full() {
     fill(255);
     textAlign(CENTER, CENTER);
     text(`He seems happy :)`, width / 2, 2 * height / 3);
+}
+
+function hungry() {
+    push();
+    background(0);
+    textSize(94);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Time's up!`, width / 2, height / 2);
 
     textSize(54);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Click to return to title`, width / 2, 2 * height / 3 + 50);
-    pop();
+    text(`Your fish is still hungry!`, width / 2, 2 * height / 3);
 }
-
-//funtion hungry()
 
 function moveFish() {
     if (fish.target === undefined) {
@@ -182,21 +193,6 @@ function moveFood(food) {
     food.y = constrain(food.y, 0, height);
 }
 
-function displayFish() {
-    push();
-    fill(255, 150, 0);
-    noStroke();
-    ellipse(fish.x, fish.y, fish.size);
-}
-
-function displayFood(food) {
-    push();
-    fill(200, 100, 100);
-    noStroke();
-    ellipse(food.x, food.y, food.size);
-    pop();
-}
-
 function checkFood(food) {
 
     let d = dist(fish.x, fish.y, food.x, food.y);
@@ -216,11 +212,33 @@ function checkFishSize() {
     }
 }
 
-/*function checkTime() {
-    if (frameCount > 30 || fish.target === undefined) {
+function checkTime() {
+    if (frameCount > 350) {
         state = `hungry`;
     }
-}*/
+}
+
+function displayFish() {
+    push();
+    fill(255, 150, 0);
+    noStroke();
+    ellipse(fish.x, fish.y, fish.size);
+}
+
+function displayFood(food) {
+    push();
+    fill(200, 100, 100);
+    noStroke();
+    ellipse(food.x, food.y, food.size);
+    pop();
+}
+
+function displayTime() {
+    textSize(100);
+    fill(255);
+    textAlign(RIGHT, TOP);
+    text(frameCount, 200, 20);
+}
 
 function mousePressed() {
     if (state === `title`) {
