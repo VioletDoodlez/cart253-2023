@@ -22,6 +22,11 @@ let fish = {
 let diet = [];
 let dietSize = 4;
 
+let aquariumImage;
+let titleImage;
+let fullImage;
+let hungryImage;
+
 let state = `title`
 
 /**
@@ -29,6 +34,10 @@ let state = `title`
 */
 function preload() {
     fish.image = loadImage("assets/images/fish.png");
+    aquariumImage = loadImage("assets/images/background.png");
+    titleImage = loadImage("assets/images/title.png");
+    fullImage = loadImage("assets/images/full.png");
+    hungryImage = loadImage("assets/images/hungry.png");
 }
 
 
@@ -84,18 +93,18 @@ function draw() {
 
 function title() {
     push();
-    background(0);
-    textSize(94);
+    background(titleImage);
+    textSize(200);
     fill(255);
     textAlign(CENTER, CENTER);
     text(`Aquarium`, width / 2, height / 2);
 
-    textSize(54);
+    textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
     text(`Your fish is hungry! Feed him before the frame count reaches 350`, width / 2, 2 * height / 3);
 
-    textSize(54);
+    textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
     text(`Click to start/feed your fish`, width / 2, 2 * height / 3 + 50);
@@ -103,7 +112,7 @@ function title() {
 }
 
 function simulation() {
-    background(0);
+    background(aquariumImage);
 
     for (let i = 0; i < diet.length; i++) {
         moveFood(diet[i]);
@@ -120,8 +129,8 @@ function simulation() {
 
 function full() {
     push();
-    background(0);
-    textSize(94);
+    background(fullImage);
+    textSize(200);
     fill(255);
     textAlign(CENTER, CENTER);
     text(`Your fish is full!`, width / 2, height / 2);
@@ -134,8 +143,8 @@ function full() {
 
 function hungry() {
     push();
-    background(0);
-    textSize(94);
+    background(hungryImage);
+    textSize(200);
     fill(255);
     textAlign(CENTER, CENTER);
     text(`Time's up!`, width / 2, height / 2);
