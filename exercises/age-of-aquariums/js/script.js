@@ -15,7 +15,8 @@ let fish = {
     vx: 0,
     vy: 0,
     speed: 5,
-    target: undefined
+    target: undefined,
+    image: undefined
 };
 
 let diet = [];
@@ -27,7 +28,7 @@ let state = `title`
  * Description of preload
 */
 function preload() {
-
+    fish.image = loadImage("assets/images/fish.png");
 }
 
 
@@ -92,7 +93,7 @@ function title() {
     textSize(54);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Your fish is hungry! Feed him before the frame rate reaches 350`, width / 2, 2 * height / 3);
+    text(`Your fish is hungry! Feed him before the frame count reaches 350`, width / 2, 2 * height / 3);
 
     textSize(54);
     fill(255);
@@ -220,9 +221,13 @@ function checkTime() {
 
 function displayFish() {
     push();
-    fill(255, 150, 0);
-    noStroke();
-    ellipse(fish.x, fish.y, fish.size);
+    imageMode(CENTER);
+    translate(fish.x, fish.y);
+    if (fish.vx > 0) {
+        scale(-1, 1);
+    }
+    image(fish.image, 0, 0, fish.size, fish.size);
+    pop();
 }
 
 function displayFood(food) {
