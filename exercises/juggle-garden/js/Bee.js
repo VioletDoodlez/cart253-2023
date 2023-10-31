@@ -4,6 +4,7 @@ class Bee {
         this.y = y;
         this.size = 40;
         this.minSize = 10;
+        this.maxSize = 40;
         this.vx = 0;
         this.vy = 0;
         this.speed = 5;

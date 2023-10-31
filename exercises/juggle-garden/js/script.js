@@ -12,13 +12,15 @@ let garden = {
     flowers: [],
     numFlowers: 20,
     bees: [],
-    numBees: 5,
+    numBees: 20,
     grassColor: {
         r: 120,
         g: 180,
         b: 120
     }
 };
+
+let droplets = [];
 
 /**
  * Description of preload
@@ -89,4 +91,38 @@ function draw() {
         }
 
     }
+
+    for (let i = 0; i < droplets.length; i++) {
+        let water = droplets[i];
+
+        if (water.touch) {
+            water.shrink();
+            water.move();
+            for (let f = 0; f < garden.flowers.length; f++) {
+                let flower = garden.flowers[f];
+                water.watering(flower, water, droplets);
+
+                for (let b = 0; b < garden.bees.length; b++) {
+                    let bee = garden.bees[b];
+                    water.scare(bee, garden.bees, water, droplets);
+                    // water.falling(flower, bee);
+                    console.log(droplets[0].x);
+                }
+            }
+
+            water.display();
+        }
+    }
+}
+
+//function title() //shows title screen
+//function simulation() //simulates actions
+//function gone() //water hits the bees and they all disappear
+//function wilt() //all of the flowers have shrunk
+//function bloom() //flowers are still blooming when timer runs out
+
+function mousePressed() {
+    let water = new Water(mouseX, mouseY);
+    droplets.push(water);
+
 }

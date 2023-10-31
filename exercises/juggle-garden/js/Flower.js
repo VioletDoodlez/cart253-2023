@@ -35,7 +35,7 @@ class Flower {
     }
 
     pollinate() {
-        let growth = random(0, 0.5);
+        let growth = random(0.5, 1);
         this.petalThickness = this.petalThickness + growth / 10;
         this.size = this.size + growth;
 
