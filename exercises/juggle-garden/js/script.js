@@ -10,9 +10,9 @@
 
 let garden = {
     flowers: [],
-    numFlowers: 20,
+    numFlowers: 30,
     bees: [],
-    numBees: 20,
+    numBees: 10,
     grassColor: {
         r: 120,
         g: 180,
@@ -21,6 +21,8 @@ let garden = {
 };
 
 let droplets = [];
+
+let state = `title`;
 
 /**
  * Description of preload
@@ -34,13 +36,13 @@ function preload() {
  * Description of setup
 */
 function setup() {
-    createCanvas(600, 600);
+    createCanvas(windowWidth, windowHeight);
 
     for (let i = 0; i < garden.numFlowers; i++) {
         let x = random(0, width);
         let y = random(0, height);
-        let size = random(50, 80);
-        let stemLength = random(50, 100);
+        let size = random(50, 100);
+        let stemLength = random(50, 150);
         let petalColor = {
             r: random(100, 255),
             g: random(100, 255),
@@ -64,6 +66,35 @@ function setup() {
  * Description of draw()
 */
 function draw() {
+    if (state === `title`) {
+        title();
+    }
+    else if (state === `simulation`) {
+        simulation();
+    }
+}
+
+function title() {
+    push();
+    background(0);
+    textSize(200);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Garden`, width / 2, height / 2);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Water your flowers before they wilt! Don't wet the bees!`, width / 2, 2 * height / 3);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Click to start/water the flowers`, width / 2, 2 * height / 3 + 50);
+    pop();
+}
+
+function simulation() {
     background(garden.grassColor.r, garden.grassColor.g, garden.grassColor.b);
 
     for (let i = 0; i < garden.flowers.length; i++) {
@@ -115,14 +146,17 @@ function draw() {
     }
 }
 
-//function title() //shows title screen
-//function simulation() //simulates actions
 //function gone() //water hits the bees and they all disappear
+
 //function wilt() //all of the flowers have shrunk
+
 //function bloom() //flowers are still blooming when timer runs out
 
 function mousePressed() {
+    if (state === `title`) {
+        state = `simulation`;
+    }
+
     let water = new Water(mouseX, mouseY);
     droplets.push(water);
-
 }

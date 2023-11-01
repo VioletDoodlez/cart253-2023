@@ -5,7 +5,7 @@ class Flower {
         this.y = y;
         this.size = size;
         this.maxSize = size;
-        this.stemLength = this.stemLength;
+        this.stemLength = stemLength;
         this.stemThickness = 10;
         this.petalThickness = 10;
         this.maxPetalThickness = 10;
