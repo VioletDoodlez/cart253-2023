@@ -2,11 +2,11 @@ class Water {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.size = 10;
+        this.size = 40;
         this.vx = 0;
         this.vy = 1;
         this.speed = 1;
-        this.shrinkRate = 0.05;
+        this.shrinkRate = 1;
         this.minSize = 1;
         this.fill = {
             r: 0,

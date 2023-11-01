@@ -9,20 +9,20 @@ class Bee {
         this.vy = 0;
         this.speed = 5;
         this.growRate = 0.1;
-        this.shrinkRate = 0.05;
+        //this.shrinkRate = 0.05;
         this.jitteriness = 0.1;
         this.alive = true;
     }
 
-    shrink() {
+    //shrink() {
 
-        this.size = this.size - this.shrinkRate;
+    //this.size = this.size - this.shrinkRate;
 
-        if (this.size < this.minSize) {
-            this.alive = false;
-        }
+    //if (this.size < this.minSize) {
+    //this.alive = false;
+    //}
 
-    }
+    //}
 
     tryToPollinate(flower) {
         let d = dist(this.x, this.y, flower.x, flower.y);

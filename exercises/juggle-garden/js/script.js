@@ -72,6 +72,12 @@ function draw() {
     else if (state === `simulation`) {
         simulation();
     }
+    else if (state === 'gone') {
+        gone();
+    }
+    else if (state === `wilt`) {
+        wilt();
+    }
 }
 
 function title() {
@@ -110,7 +116,7 @@ function simulation() {
         let bee = garden.bees[i];
 
         if (bee.alive) {
-            bee.shrink();
+            //bee.shrink();
             bee.move();
 
             for (let j = 0; j < garden.flowers.length; j++) {
@@ -140,17 +146,71 @@ function simulation() {
                     console.log(droplets[0].x);
                 }
             }
-
             water.display();
         }
     }
+    checkFlowers();
+    checkBees();
 }
 
-//function gone() //water hits the bees and they all disappear
+function gone() {
+    push();
+    background(0);
+    textSize(200);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Game Over`, width / 2, height / 2);
 
-//function wilt() //all of the flowers have shrunk
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`You scared off the bees!`, width / 2, 2 * height / 3);
+    pop();
+}
+function wilt() { //all of the flowers have shrunk
+    push();
+    background(0);
+    textSize(200);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Game Over`, width / 2, height / 2);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Your flowers wilted!`, width / 2, 2 * height / 3);
+    pop();
+}
 
 //function bloom() //flowers are still blooming when timer runs out
+
+function checkFlowers() {
+    let flowersWilt = true;
+    for (let i = 0; i < garden.bees.length; i++) {
+        if (garden.flowers[i].alive) {
+            flowersWilt = false;
+            break;
+        }
+    }
+
+    if (flowersWilt) {
+        state = `wilt`;
+    }
+}
+
+function checkBees() {
+    let beesGone = true;
+    for (let i = 0; i < garden.bees.length; i++) {
+        if (garden.bees[i].alive) {
+            beesGone = false;
+            break;
+        }
+    }
+
+    if (beesGone) {
+        state = `gone`;
+    }
+}
 
 function mousePressed() {
     if (state === `title`) {
