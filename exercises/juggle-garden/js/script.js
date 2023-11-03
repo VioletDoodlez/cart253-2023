@@ -42,6 +42,7 @@ function setup() {
         let x = random(0, width);
         let y = random(0, height);
         let size = random(50, 100);
+        let maxSize = random(80, 100);
         let stemLength = random(50, 150);
         let petalColor = {
             r: random(100, 255),
@@ -49,7 +50,7 @@ function setup() {
             b: random(100, 255)
         }
 
-        let flower = new Flower(x, y, size, stemLength, petalColor);
+        let flower = new Flower(x, y, size, maxSize, stemLength, petalColor);
         garden.flowers.push(flower);
     }
 
@@ -77,6 +78,9 @@ function draw() {
     }
     else if (state === `wilt`) {
         wilt();
+    }
+    else if (state === `bloom`) {
+        bloom();
     }
 }
 
@@ -142,7 +146,6 @@ function simulation() {
                 for (let b = 0; b < garden.bees.length; b++) {
                     let bee = garden.bees[b];
                     water.scare(bee, garden.bees, water, droplets);
-                    // water.falling(flower, bee);
                     console.log(droplets[0].x);
                 }
             }
@@ -182,11 +185,24 @@ function wilt() { //all of the flowers have shrunk
     pop();
 }
 
-//function bloom() //flowers are still blooming when timer runs out
+function bloom() { //flowers are still blooming when timer runs out
+    push();
+    background(0);
+    textSize(200);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`You win!`, width / 2, height / 2);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Your garden is in full bloom! Great job!`, width / 2, 2 * height / 3);
+    pop();
+}
 
 function checkFlowers() {
     let flowersWilt = true;
-    for (let i = 0; i < garden.bees.length; i++) {
+    for (let i = 0; i < garden.flowers.length; i++) {
         if (garden.flowers[i].alive) {
             flowersWilt = false;
             break;
@@ -196,7 +212,20 @@ function checkFlowers() {
     if (flowersWilt) {
         state = `wilt`;
     }
+
+    let flowersBloom = true;
+    for (let i = 0; i < garden.flowers.length; i++) {
+        if (garden.flowers[i].size < 70) {
+            flowersBloom = false;
+            break;
+        }
+    }
+
+    if (flowersBloom) {
+        state = `bloom`;
+    }
 }
+
 
 function checkBees() {
     let beesGone = true;
@@ -217,6 +246,11 @@ function mousePressed() {
         state = `simulation`;
     }
 
+    let water = new Water(mouseX, mouseY);
+    droplets.push(water);
+}
+
+function mouseDragged() {
     let water = new Water(mouseX, mouseY);
     droplets.push(water);
 }

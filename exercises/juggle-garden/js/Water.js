@@ -5,13 +5,13 @@ class Water {
         this.size = 40;
         this.vx = 0;
         this.vy = 1;
-        this.speed = 1;
+        this.speed = 3;
         this.shrinkRate = 1;
         this.minSize = 1;
         this.fill = {
             r: 0,
             g: 0,
-            b: 200,
+            b: 150,
         };
         this.touch = true;
     }

@@ -1,14 +1,14 @@
 class Flower {
-    constructor(x, y, size, stemLength, petalColor) {
+    constructor(x, y, size, maxSize, stemLength, petalColor) {
         //position and size
         this.x = x;
         this.y = y;
         this.size = size;
-        this.maxSize = size;
+        this.maxSize = maxSize;
         this.stemLength = stemLength;
-        this.stemThickness = 10;
+        this.stemThickness = 30;
         this.petalThickness = 10;
-        this.maxPetalThickness = 10;
+        this.maxPetalThickness = 50;
         //colour
         this.stemColor = {
             r: 50,
@@ -25,7 +25,7 @@ class Flower {
     }
 
     shrink() {
-        let shrinkage = random(0, 0.1);
+        let shrinkage = random(0, 0.05);
         this.petalThickness = this.petalThickness - shrinkage / 10;
         this.size = this.size - shrinkage;
 
@@ -36,7 +36,7 @@ class Flower {
 
     pollinate() {
         let growth = random(0.5, 1);
-        this.petalThickness = this.petalThickness + growth / 10;
+        this.petalThickness = this.petalThickness + growth / 5;
         this.size = this.size + growth;
 
         this.petalThickness = constrain(this.petalThickness, 0, this.maxPetalThickness);
