@@ -1,14 +1,14 @@
 class Flower {
-    constructor(x, y, size, maxSize, stemLength, petalColor) {
+    constructor(x, y, size, maxSize, stemLength, petalColor) { //flower properties
         //position and size
         this.x = x;
         this.y = y;
         this.size = size;
         this.maxSize = maxSize;
         this.stemLength = stemLength;
-        this.stemThickness = 30;
+        this.stemThickness = 20;
         this.petalThickness = 10;
-        this.maxPetalThickness = 50;
+        this.maxPetalThickness = 30;
         //colour
         this.stemColor = {
             r: 50,
@@ -25,7 +25,8 @@ class Flower {
     }
 
     shrink() {
-        let shrinkage = random(0, 0.05);
+        //flower will shrink continuously if not tended to
+        let shrinkage = random(0, 0.1);
         this.petalThickness = this.petalThickness - shrinkage / 10;
         this.size = this.size - shrinkage;
 
@@ -35,6 +36,7 @@ class Flower {
     }
 
     pollinate() {
+        //allows flower to grow
         let growth = random(0.5, 1);
         this.petalThickness = this.petalThickness + growth / 5;
         this.size = this.size + growth;

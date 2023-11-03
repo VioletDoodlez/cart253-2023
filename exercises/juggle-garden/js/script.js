@@ -13,14 +13,16 @@ let garden = {
     numFlowers: 30,
     bees: [],
     numBees: 10,
-    grassColor: {
-        r: 120,
-        g: 180,
-        b: 120
-    }
 };
 
 let droplets = [];
+
+let titleImage;
+let grassImage;
+let bloomImage;
+let goneImage;
+let wiltImage;
+let waterImage;
 
 let state = `title`;
 
@@ -28,7 +30,13 @@ let state = `title`;
  * Description of preload
 */
 function preload() {
-
+    //title screen, end screen and water images
+    titleImage = loadImage("assets/images/title.jpg");
+    grassImage = loadImage("assets/images/grass.jpg");
+    bloomImage = loadImage("assets/images/bloom.jpg");
+    goneImage = loadImage("assets/images/gone.jpg");
+    wiltImage = loadImage("assets/images/wilt.jpg");
+    waterImage = loadImage("assets/images/water.jpg");
 }
 
 
@@ -39,8 +47,10 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
 
     for (let i = 0; i < garden.numFlowers; i++) {
+        // randomizes position
         let x = random(0, width);
         let y = random(0, height);
+        // randomizes properties
         let size = random(50, 100);
         let maxSize = random(80, 100);
         let stemLength = random(50, 150);
@@ -50,16 +60,20 @@ function setup() {
             b: random(100, 255)
         }
 
+        // creates new flower with the array with randomized protperties
         let flower = new Flower(x, y, size, maxSize, stemLength, petalColor);
         garden.flowers.push(flower);
     }
 
     for (let i = 0; i < garden.numBees; i++) {
+        // spawns a bee in a random area of the canvas
         let x = random(0, width);
         let y = random(0, height);
         let bee = new Bee(x, y);
         garden.bees.push(bee);
     }
+
+    let water = new Water(width / 10, height / 10, waterImage); //allows image to be used
 }
 
 
@@ -84,9 +98,9 @@ function draw() {
     }
 }
 
-function title() {
+function title() { //title screen
     push();
-    background(0);
+    background(titleImage);
     textSize(200);
     fill(255);
     textAlign(CENTER, CENTER);
@@ -100,12 +114,12 @@ function title() {
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Click to start/water the flowers`, width / 2, 2 * height / 3 + 50);
+    text(`Click (and drag) to start/water the flowers`, width / 2, 2 * height / 3 + 50);
     pop();
 }
 
 function simulation() {
-    background(garden.grassColor.r, garden.grassColor.g, garden.grassColor.b);
+    background(grassImage);
 
     for (let i = 0; i < garden.flowers.length; i++) {
         let flower = garden.flowers[i];
@@ -120,7 +134,6 @@ function simulation() {
         let bee = garden.bees[i];
 
         if (bee.alive) {
-            //bee.shrink();
             bee.move();
 
             for (let j = 0; j < garden.flowers.length; j++) {
@@ -156,51 +169,8 @@ function simulation() {
     checkBees();
 }
 
-function gone() {
-    push();
-    background(0);
-    textSize(200);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Game Over`, width / 2, height / 2);
-
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`You scared off the bees!`, width / 2, 2 * height / 3);
-    pop();
-}
-function wilt() { //all of the flowers have shrunk
-    push();
-    background(0);
-    textSize(200);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Game Over`, width / 2, height / 2);
-
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Your flowers wilted!`, width / 2, 2 * height / 3);
-    pop();
-}
-
-function bloom() { //flowers are still blooming when timer runs out
-    push();
-    background(0);
-    textSize(200);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`You win!`, width / 2, height / 2);
-
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Your garden is in full bloom! Great job!`, width / 2, 2 * height / 3);
-    pop();
-}
-
 function checkFlowers() {
+    // displays wilt ending if all flowers are gone from the array
     let flowersWilt = true;
     for (let i = 0; i < garden.flowers.length; i++) {
         if (garden.flowers[i].alive) {
@@ -213,6 +183,7 @@ function checkFlowers() {
         state = `wilt`;
     }
 
+    // displays bloom ending is flower size is higher than 70
     let flowersBloom = true;
     for (let i = 0; i < garden.flowers.length; i++) {
         if (garden.flowers[i].size < 70) {
@@ -227,7 +198,7 @@ function checkFlowers() {
 }
 
 
-function checkBees() {
+function checkBees() { // displays gone ending when all bees are gone from the array
     let beesGone = true;
     for (let i = 0; i < garden.bees.length; i++) {
         if (garden.bees[i].alive) {
@@ -241,16 +212,63 @@ function checkBees() {
     }
 }
 
+function gone() { //all the bees are gone
+    push();
+    background(goneImage);
+    textSize(200);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Game Over`, width / 2, height / 2);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`You scared off the bees!`, width / 2, 2 * height / 3);
+    pop();
+}
+function wilt() { //all of the flowers have shrunk
+    push();
+    background(wiltImage);
+    textSize(200);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Game Over`, width / 2, height / 2);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Your flowers wilted!`, width / 2, 2 * height / 3);
+    pop();
+}
+
+function bloom() { //flowers are still blooming when timer runs out
+    push();
+    background(bloomImage);
+    textSize(200);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`You win!`, width / 2, height / 2);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Your garden is in full bloom! Great job!`, width / 2, 2 * height / 3);
+    pop();
+}
+
 function mousePressed() {
+    // starts simulation when clicked
     if (state === `title`) {
         state = `simulation`;
     }
 
-    let water = new Water(mouseX, mouseY);
+    // summons water from mouse
+    let water = new Water(mouseX, mouseY, waterImage);
     droplets.push(water);
 }
 
 function mouseDragged() {
-    let water = new Water(mouseX, mouseY);
+    // allows a continuous stream of water if player clicks and drags
+    let water = new Water(mouseX, mouseY, waterImage);
     droplets.push(water);
 }
