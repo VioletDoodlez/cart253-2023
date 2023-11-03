@@ -2,8 +2,9 @@
  * Juggle Garden
  * Nicole Covaliu
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * The player must water their plants so they can reach a certain size.
+ * They need to prevent their flowers from wilting and from splashing
+ * the bees or else they get a game over
  */
 
 "use strict";
