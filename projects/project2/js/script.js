@@ -8,13 +8,20 @@
 
 "use strict";
 
+let button = {
+    x: undefined,
+    y: undefined,
+    size: 50
+}
+
 let staticGif;
 let tvImage;
-//let toneSFX;
+let toneSFX;
 
 let transparency = 100; //make my transparency a variable to trigger an ending easily;
 
 let state = `title`;
+let tvstate = `off`;
 
 /**
  * Description of preload
@@ -23,7 +30,7 @@ function preload() {
     staticGif = loadImage("assets/images/static.gif");
     tvImage = loadImage("assets/images/tv.gif");
 
-    //toneSFX = loadSound("assets/sounds/tone.wav");
+    toneSFX = loadSound("assets/sounds/tone.wav");
 }
 
 
@@ -32,7 +39,10 @@ function preload() {
 */
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    userStartAudio();
+    //userStartAudio();
+
+    button.x = width / 4 + 900;
+    button.y = height / 4 + 670;
 
     //toneSFX.addCue(0.1, 1);
 }
@@ -50,6 +60,7 @@ function draw() {
     }
     else if (state === `tuned`) {
         tuned();
+        noLoop();
     }
 
 }
@@ -82,13 +93,42 @@ function simulation() {
 function display() { // display gifs, with static gif superimposed with a lower opacity
     background(0);
 
-    imageMode(CENTER);
-    image(tvImage, width / 2, height / 2, 700, 700);
-
+    // tvbox
     push();
-    tint(255, transparency);
-    imageMode(CENTER);
-    image(staticGif, width / 2, height / 2, 700, 700,);
+    rectMode(CENTER);
+    noStroke();
+    fill(127, 127, 127);
+    rect(width / 2, height / 2, 1000, 1000, 20);
+    pop();
+
+    //tv screen
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(0);
+    rect(width / 2, height / 2 - 50, 800, 800, 20);
+    pop();
+
+    if (tvstate === `on`) {
+        // program
+        push();
+        imageMode(CENTER);
+        image(tvImage, width / 2, height / 2 - 50, 750, 750);
+        pop();
+
+        // static
+        push();
+        tint(255, transparency);
+        imageMode(CENTER);
+        image(staticGif, width / 2, height / 2 - 50, 750, 750,);
+        pop();
+    }
+
+    // button
+    push();
+    noStroke();
+    fill(255, 0, 0);
+    ellipse(width / 4 + 900, height / 4 + 670, button.size);
     pop();
 }
 
@@ -113,9 +153,8 @@ function checkStatic() {
 }
 
 function tuned() { // ending "screen"
-    //toneSFX.play();
+    toneSFX.play();
 
-    push();
     textSize(150);
     fill(255);
     textAlign(CENTER, CENTER);
@@ -130,5 +169,11 @@ function tuned() { // ending "screen"
 function mousePressed() { //starts simulation
     if (state === `title`) {
         state = `simulation`;
+    }
+
+    let d = dist(button.x, button.y, mouseX, mouseY);
+    if (d < button.size / 2) {
+        tvstate = `on`;
+        console.log("hello");
     }
 }
