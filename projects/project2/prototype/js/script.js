@@ -2,8 +2,8 @@
  * Project 2
  * Nicole Covaliu
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * A prototype allowing the player to control the alpha of a gif
+ * to remove the 
  */
 
 "use strict";
@@ -22,7 +22,7 @@ let buttonSFX;
 let transparency = undefined; //make my transparency a variable to trigger an ending easily;
 
 let state = `title`;
-let tvstate = `off`;
+let tvstate = `off`; // allows me to turn my tv on if i press the red button
 
 /**
  * Description of preload
@@ -42,6 +42,7 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    //sets up button position
     button.x = width / 4 + 650;
     button.y = height / 4 + 490;
 
@@ -91,7 +92,7 @@ function simulation() { // simulation
     checkStatic();
 }
 
-function display() { // display gifs, with static gif superimposed with a lower opacity
+function display() {
     background(0);
 
     // tvbox
@@ -110,8 +111,8 @@ function display() { // display gifs, with static gif superimposed with a lower 
     rect(width / 2, height / 2 - 20, 600, 600, 20);
     pop();
 
-    if (tvstate === `on`) {
-        // program
+    if (tvstate === `on`) { // display gifs, with static gif superimposed with a lower opacity (when red button is clicked)
+        // vhs program
         push();
         imageMode(CENTER);
         image(tvImage, width / 2, height / 2 - 20, 550, 550);
@@ -154,7 +155,7 @@ function checkStatic() {
 }
 
 function tuned() { // ending "screen"
-    toneSFX.play();
+    toneSFX.play(); // plays sound effect
 
     textSize(150);
     fill(255);
@@ -167,11 +168,13 @@ function tuned() { // ending "screen"
     text(`You got a clear image!`, width / 2, 2 * height / 3);
 }
 
-function mousePressed() { //starts simulation
+function mousePressed() {
+    //starts simulation
     if (state === `title`) {
         state = `simulation`;
     }
 
+    // allows player to turn on the tv
     let d = dist(button.x, button.y, mouseX, mouseY);
     if (d < button.size / 2) {
         tvstate = `on`;
