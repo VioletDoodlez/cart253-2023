@@ -11,11 +11,14 @@
 let button = {
     x: undefined,
     y: undefined,
-    size: 30
+    size: 20
 }
 
 let staticGif;
+let vhsGif;
 let tvImage;
+let tableImage;
+
 let toneSFX;
 let buttonSFX;
 
@@ -29,7 +32,9 @@ let tvstate = `off`; // allows me to turn my tv on if i press the red button
 */
 function preload() {
     staticGif = loadImage("assets/images/static.gif");
-    tvImage = loadImage("assets/images/tv.gif");
+    vhsGif = loadImage("assets/images/vhs.gif");
+    tvImage = loadImage("assets/images/tv.jpg");
+    tableImage = loadImage("assets/images/table.png");
 
     toneSFX = loadSound("assets/sounds/tone.wav");
     buttonSFX = loadSound("assets/sounds/switch.wav");
@@ -43,8 +48,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
 
     //sets up button position
-    button.x = width / 4 + 650;
-    button.y = height / 4 + 490;
+    button.x = width / 4 + 680;
+    button.y = height / 4 + 350;
 
     transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
 }
@@ -95,36 +100,30 @@ function simulation() { // simulation
 function display() {
     background(0);
 
-    // tvbox
     push();
-    rectMode(CENTER);
-    noStroke();
-    fill(127, 127, 127);
-    rect(width / 2, height / 2, 720, 720, 20);
-    pop();
-
-    //tv screen
-    push();
-    rectMode(CENTER);
-    noStroke();
-    fill(0);
-    rect(width / 2, height / 2 - 20, 600, 600, 20);
+    imageMode(CENTER);
+    image(tableImage, width / 2, height + 200, 1500, 700);
     pop();
 
     if (tvstate === `on`) { // display gifs, with static gif superimposed with a lower opacity (when red button is clicked)
         // vhs program
         push();
         imageMode(CENTER);
-        image(tvImage, width / 2, height / 2 - 20, 550, 550);
+        image(vhsGif, width / 2 - 75, height / 2, 600, 500);
         pop();
 
         // static
         push();
         tint(255, transparency);
         imageMode(CENTER);
-        image(staticGif, width / 2, height / 2 - 20, 550, 550,);
+        image(staticGif, width / 2 - 75, height / 2, 600, 500);
         pop();
     }
+
+    push();
+    imageMode(CENTER);
+    image(tvImage, width / 2, height / 2, 900, 600);
+    pop();
 
     // button
     push();
