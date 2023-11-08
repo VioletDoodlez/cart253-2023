@@ -11,14 +11,15 @@
 let button = {
     x: undefined,
     y: undefined,
-    size: 50
+    size: 30
 }
 
 let staticGif;
 let tvImage;
 let toneSFX;
+let buttonSFX;
 
-let transparency = 100; //make my transparency a variable to trigger an ending easily;
+let transparency = undefined; //make my transparency a variable to trigger an ending easily;
 
 let state = `title`;
 let tvstate = `off`;
@@ -31,6 +32,7 @@ function preload() {
     tvImage = loadImage("assets/images/tv.gif");
 
     toneSFX = loadSound("assets/sounds/tone.wav");
+    buttonSFX = loadSound("assets/sounds/switch.wav");
 }
 
 
@@ -39,12 +41,11 @@ function preload() {
 */
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    //userStartAudio();
 
-    button.x = width / 4 + 900;
-    button.y = height / 4 + 670;
+    button.x = width / 4 + 650;
+    button.y = height / 4 + 490;
 
-    //toneSFX.addCue(0.1, 1);
+    transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
 }
 
 
@@ -60,7 +61,7 @@ function draw() {
     }
     else if (state === `tuned`) {
         tuned();
-        noLoop();
+        noLoop(); //prevents toneSFX from looping
     }
 
 }
@@ -76,7 +77,7 @@ function title() { //title screen
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Use your arrow keys to get rid of the static on your screen`, width / 2, 2 * height / 3);
+    text(`Turn on your tv and use your arrow keys to get rid of the static on your screen`, width / 2, 2 * height / 3);
 
     textSize(34);
     fill(255);
@@ -84,7 +85,7 @@ function title() { //title screen
     text(`Click to start`, width / 2, 2 * height / 3 + 50);
 }
 
-function simulation() {
+function simulation() { // simulation
     display();
     tune();
     checkStatic();
@@ -98,7 +99,7 @@ function display() { // display gifs, with static gif superimposed with a lower 
     rectMode(CENTER);
     noStroke();
     fill(127, 127, 127);
-    rect(width / 2, height / 2, 1000, 1000, 20);
+    rect(width / 2, height / 2, 720, 720, 20);
     pop();
 
     //tv screen
@@ -106,21 +107,21 @@ function display() { // display gifs, with static gif superimposed with a lower 
     rectMode(CENTER);
     noStroke();
     fill(0);
-    rect(width / 2, height / 2 - 50, 800, 800, 20);
+    rect(width / 2, height / 2 - 20, 600, 600, 20);
     pop();
 
     if (tvstate === `on`) {
         // program
         push();
         imageMode(CENTER);
-        image(tvImage, width / 2, height / 2 - 50, 750, 750);
+        image(tvImage, width / 2, height / 2 - 20, 550, 550);
         pop();
 
         // static
         push();
         tint(255, transparency);
         imageMode(CENTER);
-        image(staticGif, width / 2, height / 2 - 50, 750, 750,);
+        image(staticGif, width / 2, height / 2 - 20, 550, 550,);
         pop();
     }
 
@@ -128,7 +129,7 @@ function display() { // display gifs, with static gif superimposed with a lower 
     push();
     noStroke();
     fill(255, 0, 0);
-    ellipse(width / 4 + 900, height / 4 + 670, button.size);
+    ellipse(button.x, button.y, button.size);
     pop();
 }
 
@@ -175,5 +176,6 @@ function mousePressed() { //starts simulation
     if (d < button.size / 2) {
         tvstate = `on`;
         console.log("hello");
+        buttonSFX.play();
     }
 }
