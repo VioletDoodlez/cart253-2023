@@ -11,7 +11,8 @@
 let balls = [];
 let squares = [];
 
-let notes = [`F3`, `G3`, `Ab4`, `Bb4`, `C4`, `Db4`, `Eb4`, `F4`];
+let ballNotes = [`F3`, `G3`, `Ab4`, `Bb4`, `C4`, `Db4`, `Eb4`, `F4`];
+let squareNotes = [`F4`, `G4`, `Ab5`, `Bb5`, `C5`, `Db5`, `Eb5`, `F5`];
 
 /**
  * Description of preload
@@ -53,20 +54,22 @@ function draw() {
 
 function mouseDragged() {
     createBall(mouseX, mouseY);
-    console.log("click");
+    console.log("ball");
 }
 
 function createBall(x, y) {
-    let note = random(notes);
+    let note = random(ballNotes);
     let ball = new Ball(x, y, note);
     balls.push(ball);
 }
 
 function mousePressed() {
     createSquare(mouseX, mouseY);
+    console.log("square");
 }
 
 function createSquare(x, y) {
-    let square = new Square(x, y);
+    let note = random(squareNotes);
+    let square = new Square(x, y, note);
     squares.push(square);
 }

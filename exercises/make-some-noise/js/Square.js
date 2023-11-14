@@ -1,5 +1,5 @@
 class Square {
-    constructor(x, y) {
+    constructor(x, y, note) {
         this.x = x;
         this.y = y;
         this.w = 50;
@@ -25,18 +25,18 @@ class Square {
     bounce() {
         if (this.x - this.w / 2 < 0 || this.x + this.w / 2 > width) {
             this.vx = -this.vx;
-            // this.playNote();
+            this.playNote();
         }
 
         if (this.y - this.h / 2 < 0 || this.y + this.h / 2 > height) {
             this.vy = -this.vy;
-            // this.playNote();
+            this.playNote();
         }
 
     }
 
     playNote() {
-        this.synth.play(this.note, 0.5, 0, 0.2)
+        this.synth.play(this.note, 0.5, 0, 0.2);
     }
 
     display() {

@@ -12,11 +12,11 @@ class Ball {
         this.vx = random(-this.speed, this.speed);
         this.vy = random(-this.speed, this.speed);
 
-        this.oscillator = new p5.Oscillator();
-        this.nearFreq = 220;
-        this.farFreq = 440;
-        this.oscillator.amp(0.025);
-        this.oscillator.start();
+        // this.oscillator = new p5.Oscillator();
+        // this.nearFreq = 220;
+        // this.farFreq = 440;
+        // this.oscillator.amp(0.025);
+        // this.oscillator.start();
 
         this.note = note;
         this.synth = new p5.PolySynth();
@@ -27,10 +27,10 @@ class Ball {
         this.x += this.vx;
         this.y += this.vy;
 
-        let d = dist(this.x, this.y, width / 2, height / 2);
-        let maxDist = dist(0, 0, width / 2, height / 2);
-        let newFreq = map(d, 0, maxDist, this.nearFreq, this.farFreq);
-        this.oscillator.freq(newFreq);
+        // let d = dist(this.x, this.y, width / 2, height / 2);
+        // let maxDist = dist(0, 0, width / 2, height / 2);
+        // let newFreq = map(d, 0, maxDist, this.nearFreq, this.farFreq);
+        // this.oscillator.freq(newFreq);
     }
 
     bounce() {
