@@ -9,6 +9,7 @@
 "use strict";
 
 let balls = [];
+let squares = [];
 
 let notes = [`F3`, `G3`, `Ab4`, `Bb4`, `C4`, `Db4`, `Eb4`, `F4`];
 
@@ -41,9 +42,16 @@ function draw() {
         ball.bounce();
         ball.display();
     }
+
+    for (let i = 0; i < squares.length; i++) {
+        let square = squares[i];
+        square.move();
+        square.bounce();
+        square.display();
+    }
 }
 
-function mousePressed() {
+function mouseDragged() {
     createBall(mouseX, mouseY);
     console.log("click");
 }
@@ -52,4 +60,13 @@ function createBall(x, y) {
     let note = random(notes);
     let ball = new Ball(x, y, note);
     balls.push(ball);
+}
+
+function mousePressed() {
+    createSquare(mouseX, mouseY);
+}
+
+function createSquare(x, y) {
+    let square = new Square(x, y);
+    squares.push(square);
 }
