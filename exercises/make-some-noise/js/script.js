@@ -23,12 +23,7 @@ function preload() {
 */
 function setup() {
     createCanvas(windowWidth, windowHeight);
-
-    for (let i = 0; i < 4; i++) {
-        balls[i] = createBall();
-    }
 }
-
 
 /**
  * Description of draw()
@@ -36,4 +31,20 @@ function setup() {
 function draw() {
     background(0);
 
+    for (let i = 0; i < balls.length; i++) {
+        let ball = balls[i];
+        ball.move();
+        ball.bounce();
+        ball.display();
+    }
+}
+
+function mousePressed() {
+    createBall(mouseX, mouseY);
+    console.log("click");
+}
+
+function createBall(x, y) {
+    let ball = new Ball(x, y);
+    balls.push(ball);
 }
