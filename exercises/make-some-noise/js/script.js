@@ -10,6 +10,8 @@
 
 let balls = [];
 
+let notes = [`F3`, `G3`, `Ab4`, `Bb4`, `C4`, `Db4`, `Eb4`, `F4`];
+
 /**
  * Description of preload
 */
@@ -23,6 +25,8 @@ function preload() {
 */
 function setup() {
     createCanvas(windowWidth, windowHeight);
+
+    userStartAudio();
 }
 
 /**
@@ -45,6 +49,7 @@ function mousePressed() {
 }
 
 function createBall(x, y) {
+    let note = random(notes);
     let ball = new Ball(x, y);
     balls.push(ball);
 }
