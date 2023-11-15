@@ -22,23 +22,26 @@ class Ball {
         this.y += this.vy;
     }
 
+    //bounce off walls
     bounce() {
         if (this.x - this.size / 2 < 0 || this.x + this.size / 2 > width) {
             this.vx = -this.vx;
-            this.playNote();
+            this.playNote(); //play note when bouncing
         }
 
         if (this.y - this.size / 2 < 0 || this.y + this.size / 2 > height) {
             this.vy = -this.vy;
-            this.playNote();
+            this.playNote(); //play note when bouncing
         }
 
     }
 
+    //play synth note
     playNote() {
         this.synth.play(this.note, 0.4, 0, 0.1);
     }
 
+    //display ball
     display() {
         push();
         noStroke();

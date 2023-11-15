@@ -1,9 +1,8 @@
 /**
- * Title of Project
- * Author Name
+ * Make Some Noise
+ * Nicole Covaliu
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * Musical toy activity with added shapes and mouse input
  */
 
 "use strict";
@@ -59,11 +58,11 @@ function draw() {
         rect.bounce();
         for (let j = 0; j < balls.length; j++) {
             let ball = balls[j];
-            rect.cleanBalls(ball, balls, rect, rectangles);
+            rect.cleanBalls(ball, balls, rect, rectangles); // remove balls from array when touching
         }
         for (let j = 0; j < squares.length; j++) {
             let square = squares[j];
-            rect.cleanSquares(square, squares, rect, rectangles);
+            rect.cleanSquares(square, squares, rect, rectangles); // remove squares from array when touching
         }
 
         rect.display();

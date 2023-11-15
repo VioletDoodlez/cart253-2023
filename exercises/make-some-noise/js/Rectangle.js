@@ -78,7 +78,7 @@ class Rectangle {
         this.synth.play(this.note, 0.5, 0, 0.2);
     }
 
-    //display rectangles
+    //display rectangle
     display() {
         push();
         noStroke();

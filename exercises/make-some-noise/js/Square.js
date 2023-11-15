@@ -22,23 +22,26 @@ class Square {
         this.y += this.vy;
     }
 
+    //bounce off walls
     bounce() {
         if (this.x - this.w / 2 < 0 || this.x + this.w / 2 > width) {
             this.vx = -this.vx;
-            this.playNote();
+            this.playNote(); //play note when bouncing
         }
 
         if (this.y - this.h / 2 < 0 || this.y + this.h / 2 > height) {
             this.vy = -this.vy;
-            this.playNote();
+            this.playNote(); //play note when bouncing
         }
 
     }
 
+    //play synth note
     playNote() {
         this.synth.play(this.note, 0.5, 0, 0.2);
     }
 
+    //display square
     display() {
         push();
         noStroke();
