@@ -10,6 +10,7 @@
 
 let balls = [];
 let squares = [];
+let rectangles = [];
 
 let ballNotes = [`F3`, `G3`, `Ab4`, `Bb4`, `C4`, `Db4`, `Eb4`, `F4`];
 let squareNotes = [`F4`, `G4`, `Ab5`, `Bb5`, `C5`, `Db5`, `Eb5`, `F5`];
@@ -50,8 +51,23 @@ function draw() {
         square.bounce();
         square.display();
     }
-}
 
+    for (let i = 0; i < rectangles.length; i++) {
+        let rect = rectangles[i];
+        rect.move();
+        rect.bounce();
+        for (let j = 0; j < balls.length; j++) {
+            let ball = balls[j];
+            rect.cleanBalls(ball, balls, rect, rectangles);
+        }
+        for (let j = 0; j < squares.length; j++) {
+            let square = squares[j];
+            rect.cleanSquares(square, squares, rect, rectangles);
+        }
+
+        rect.display();
+    }
+}
 function mouseDragged() {
     createBall(mouseX, mouseY);
     console.log("ball");
@@ -72,4 +88,13 @@ function createSquare(x, y) {
     let note = random(squareNotes);
     let square = new Square(x, y, note);
     squares.push(square);
+}
+
+function mouseWheel() {
+    createRectangle(mouseX, mouseY);
+    console.log("rectangle");
+}
+function createRectangle(x, y) {
+    let rect = new Rectangle(x, y);
+    rectangles.push(rect);
 }
