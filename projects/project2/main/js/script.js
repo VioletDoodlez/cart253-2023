@@ -14,8 +14,6 @@ let button = {
     size: 20
 }
 
-let program = [];
-
 let staticGif;
 let vhsGif;
 let cartoonGif;
@@ -26,6 +24,10 @@ let newsGif;
 let weatherGif;
 let tvImage;
 let tableImage;
+
+let program = [];
+
+let channel;
 
 let toneSFX;
 let buttonSFX;
@@ -41,15 +43,17 @@ let tvstate = `off`; // allows me to turn my tv on if i press the red button
 function preload() {
     staticGif = loadImage("assets/images/static.gif");
     vhsGif = loadImage("assets/images/vhs.gif");
-    tvImage = loadImage("assets/images/tv.jpg");
-    tableImage = loadImage("assets/images/table.png");
     cartoonGif = loadImage("assets/images/cartoon.gif");
     filmGif = loadImage("assets/images/film.gif");
     infoGif = loadImage("assets/images/infomercial.gif");
     musicGif = loadImage("assets/images/music.gif");
     newsGif = loadImage("assets/images/news.gif");
-    newsGif = loadImage("assets/images/news.gif");
     weatherGif = loadImage("assets/images/weather.gif");
+
+    program.push(vhsGif, cartoonGif, filmGif, infoGif, musicGif, newsGif, weatherGif);
+
+    tvImage = loadImage("assets/images/tv.jpg");
+    tableImage = loadImage("assets/images/table.png");
 
     toneSFX = loadSound("assets/sounds/tone.wav");
     buttonSFX = loadSound("assets/sounds/switch.wav");
@@ -67,6 +71,8 @@ function setup() {
     button.y = height / 4 + 350;
 
     transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
+
+    channel = random(program);
 }
 
 
@@ -82,7 +88,7 @@ function draw() {
     }
     else if (state === `tuned`) {
         tuned();
-        noLoop(); //prevents toneSFX from looping
+        //noLoop(); //prevents toneSFX from looping
     }
 
 }
@@ -109,6 +115,7 @@ function title() { //title screen
 function simulation() { // simulation
     display();
     tune();
+    surf();
     checkStatic();
 }
 
@@ -124,7 +131,7 @@ function display() {
         // vhs program
         push();
         imageMode(CENTER);
-        image(vhsGif, width / 2 - 75, height / 2, 600, 500);
+        image(channel, width / 2 - 75, height / 2, 600, 500);
         pop();
 
         // static
@@ -162,6 +169,13 @@ function tune() { // change the opacity of the static gif
     console.log(transparency); // make sure the transparency is changing
 }
 
+function surf() {
+    if (keyIsDown(RIGHT_ARROW)) {
+        channel = cartoonGif;
+
+    }
+}
+
 function checkStatic() {
     if (transparency === 0) {
         state = `tuned`; // triggers ending if staticGif reaches 0 transparency
@@ -169,7 +183,7 @@ function checkStatic() {
 }
 
 function tuned() { // ending "screen"
-    toneSFX.play(); // plays sound effect
+    //toneSFX.play(); // plays sound effect
 
     textSize(150);
     fill(255);
@@ -182,11 +196,29 @@ function tuned() { // ending "screen"
     text(`You got a clear image!`, width / 2, 2 * height / 3);
 }
 
+function reset() {
+    tvstate = `off`; // allows me to turn my tv on if i press the red button
+
+    //sets up button position
+    button.x = width / 4 + 680;
+    button.y = height / 4 + 350;
+
+    transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
+
+    channel = random(program);
+}
+
 function mousePressed() {
     //starts simulation
     if (state === `title`) {
         state = `simulation`;
     }
+
+    if (state === `tuned`) {
+        reset();
+        state = `simulation`;
+    }
+
 
     // allows player to turn on the tv
     let d = dist(button.x, button.y, mouseX, mouseY);
