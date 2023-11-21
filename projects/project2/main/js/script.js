@@ -115,7 +115,7 @@ function title() { //title screen
 function simulation() { // simulation
     display();
     tune();
-    surf();
+    // surf();
     checkStatic();
 }
 
@@ -169,13 +169,6 @@ function tune() { // change the opacity of the static gif
     console.log(transparency); // make sure the transparency is changing
 }
 
-function surf() {
-    if (keyIsDown(RIGHT_ARROW)) {
-        channel = cartoonGif;
-
-    }
-}
-
 function checkStatic() {
     if (transparency === 0) {
         state = `tuned`; // triggers ending if staticGif reaches 0 transparency
@@ -207,6 +200,12 @@ function reset() {
 
     channel = random(program);
 }
+
+// function keyPressed() {
+//     if (keyCode === RIGHT_KEY) {
+//         transparency = random();
+//     }
+// }
 
 function mousePressed() {
     //starts simulation
