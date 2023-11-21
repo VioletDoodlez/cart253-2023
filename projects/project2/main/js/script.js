@@ -14,8 +14,16 @@ let button = {
     size: 20
 }
 
+let program = [];
+
 let staticGif;
 let vhsGif;
+let cartoonGif;
+let filmGif;
+let infoGif;
+let musicGif;
+let newsGif;
+let weatherGif;
 let tvImage;
 let tableImage;
 
@@ -35,6 +43,13 @@ function preload() {
     vhsGif = loadImage("assets/images/vhs.gif");
     tvImage = loadImage("assets/images/tv.jpg");
     tableImage = loadImage("assets/images/table.png");
+    cartoonGif = loadImage("assets/images/cartoon.gif");
+    filmGif = loadImage("assets/images/film.gif");
+    infoGif = loadImage("assets/images/infomercial.gif");
+    musicGif = loadImage("assets/images/music.gif");
+    newsGif = loadImage("assets/images/news.gif");
+    newsGif = loadImage("assets/images/news.gif");
+    weatherGif = loadImage("assets/images/weather.gif");
 
     toneSFX = loadSound("assets/sounds/tone.wav");
     buttonSFX = loadSound("assets/sounds/switch.wav");
