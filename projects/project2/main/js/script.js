@@ -70,7 +70,7 @@ function setup() {
     button.x = width / 4 + 680;
     button.y = height / 4 + 350;
 
-    transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
+    transparency = random(50, 230); //alpha of static is randomized everytime the page is refreshed
 
     channel = random(program);
 }
@@ -115,7 +115,6 @@ function title() { //title screen
 function simulation() { // simulation
     display();
     tune();
-    // surf();
     checkStatic();
 }
 
@@ -189,23 +188,18 @@ function tuned() { // ending "screen"
     text(`You got a clear image!`, width / 2, 2 * height / 3);
 }
 
-function reset() {
-    tvstate = `off`; // allows me to turn my tv on if i press the red button
-
-    //sets up button position
-    button.x = width / 4 + 680;
-    button.y = height / 4 + 350;
-
-    transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
-
-    channel = random(program);
+function keyPressed() {
+    if (keyCode === RIGHT_ARROW) {
+        transparency = random(50, 230);
+        channel = random(program);
+        buttonSFX.play();
+    }
+    if (keyCode === LEFT_ARROW) {
+        transparency = random(50, 230);
+        channel = random(program);
+        buttonSFX.play();
+    }
 }
-
-// function keyPressed() {
-//     if (keyCode === RIGHT_KEY) {
-//         transparency = random();
-//     }
-// }
 
 function mousePressed() {
     //starts simulation
@@ -226,4 +220,28 @@ function mousePressed() {
         console.log("hello");
         buttonSFX.play();
     }
+
+    function reset() {
+        tvstate = `off`; // allows me to turn my tv on if i press the red button
+
+        //sets up button position
+        button.x = width / 4 + 680;
+        button.y = height / 4 + 350;
+
+        transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
+
+        channel = random(program);
+    }
+}
+
+function reset() {
+    tvstate = `off`; // allows me to turn my tv on if i press the red button
+
+    //sets up button position
+    button.x = width / 4 + 680;
+    button.y = height / 4 + 350;
+
+    transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
+
+    channel = random(program);
 }
