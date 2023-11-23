@@ -190,13 +190,55 @@ function tuned() { // ending "screen"
 
 function keyPressed() {
     if (keyCode === RIGHT_ARROW) {
+        if (channel === cartoonGif) {
+            channel = filmGif;
+        }
+        else if (channel === filmGif) {
+            channel = infoGif;
+        }
+        else if (channel === infoGif) {
+            channel = musicGif;
+        }
+        else if (channel === musicGif) {
+            channel = newsGif;
+        }
+        else if (channel === newsGif) {
+            channel = weatherGif;
+        }
+        else if (channel === weatherGif) {
+            channel = vhsGif;
+        }
+        else if (channel === vhsGif) {
+            channel = cartoonGif;
+        }
+
         transparency = random(50, 230);
-        channel = random(program);
         buttonSFX.play();
     }
     if (keyCode === LEFT_ARROW) {
+        if (channel === cartoonGif) {
+            channel = vhsGif;
+        }
+        else if (channel === vhsGif) {
+            channel = weatherGif;
+        }
+        else if (channel === weatherGif) {
+            channel = newsGif;
+        }
+        else if (channel === newsGif) {
+            channel = musicGif;
+        }
+        else if (channel === musicGif) {
+            channel = infoGif;
+        }
+        else if (channel === infoGif) {
+            channel = filmGif;
+        }
+        else if (channel === filmGif) {
+            channel = cartoonGif;
+        }
+
         transparency = random(50, 230);
-        channel = random(program);
         buttonSFX.play();
     }
 }
