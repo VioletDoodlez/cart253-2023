@@ -2,8 +2,7 @@
  * Project 2
  * Nicole Covaliu
  * 
- * A prototype allowing the player to control the alpha of a gif
- * to remove the 
+ * 
  */
 
 "use strict";
@@ -86,6 +85,9 @@ function draw() {
     else if (state === `simulation`) {
         simulation();
     }
+    else if (state === `controls`) {
+        controls();
+    }
     else if (state === `tuned`) {
         tuned();
         //noLoop(); //prevents toneSFX from looping
@@ -104,7 +106,46 @@ function title() { //title screen
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Turn on your tv and use your arrow keys to get rid of the static on your screen`, width / 2, 2 * height / 3);
+    text(`You want to watch TV but the storm outside is messing up the signal!`, width / 2, 2 * height / 3);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Click to see controls`, width / 2, 2 * height / 3 + 50);
+}
+
+function controls() {
+    push();
+    background(0);
+    textSize(150);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Controls`, width / 2, height);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Click on the red button to turn your tv on`, width / 2, 2 * height / 3);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Use the left and right arrow keys to switch between channels`, width / 2, 2 * height / 3);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Use the up and down arrow keys to tune your tv and get rid of the static`, width / 2, 2 * height / 3);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`You can't just tune any channel! Match the channel with the icon at the top left corner of your screen.`, width / 2, 2 * height / 3);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Fail to get a match, and it's game over`, width / 2, 2 * height / 3);
 
     textSize(34);
     fill(255);
@@ -246,6 +287,10 @@ function keyPressed() {
 function mousePressed() {
     //starts simulation
     if (state === `title`) {
+        state = `controls`;
+    }
+
+    if (state === `controls`) {
         state = `simulation`;
     }
 
