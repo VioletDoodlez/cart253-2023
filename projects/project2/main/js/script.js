@@ -12,6 +12,13 @@ let button = {
     y: undefined,
     size: 20
 }
+let vhsIcon;
+let cartoonIcon;
+let filmIcon;
+let infoIcon;
+let musicIcon;
+let newsIcon;
+let weatherIcon;
 
 let staticGif;
 let vhsGif;
@@ -21,12 +28,15 @@ let infoGif;
 let musicGif;
 let newsGif;
 let weatherGif;
+
 let tvImage;
 let tableImage;
 
 let program = [];
+let category = [];
 
 let channel;
+let icon;
 
 let toneSFX;
 let buttonSFX;
@@ -40,6 +50,16 @@ let tvstate = `off`; // allows me to turn my tv on if i press the red button
  * Description of preload
 */
 function preload() {
+    vhsIcon = loadImage("assets/images/icon_vhs.png");
+    //cartoonIcon = loadImage("assets/images/icon_cartoon.png");
+    filmIcon = loadImage("assets/images/icon_film.png");
+    //infoIcon = loadImage("assets/images/icon_info.png");
+    musicIcon = loadImage("assets/images/icon_music.png");
+    newsIcon = loadImage("assets/images/icon_news.png");
+    weatherIcon = loadImage("assets/images/icon_weather.png");
+
+    category.push(vhsIcon, filmIcon, musicIcon, newsIcon, weatherIcon);
+
     staticGif = loadImage("assets/images/static.gif");
     vhsGif = loadImage("assets/images/vhs.gif");
     cartoonGif = loadImage("assets/images/cartoon.gif");
@@ -72,6 +92,8 @@ function setup() {
     transparency = random(50, 230); //alpha of static is randomized everytime the page is refreshed
 
     channel = random(program);
+
+    icon = random(category);
 }
 
 
@@ -82,11 +104,11 @@ function draw() {
     if (state === `title`) {
         title();
     }
-    else if (state === `simulation`) {
-        simulation();
-    }
     else if (state === `controls`) {
         controls();
+    }
+    else if (state === `simulation`) {
+        simulation();
     }
     else if (state === `tuned`) {
         tuned();
@@ -117,40 +139,46 @@ function title() { //title screen
 function controls() {
     push();
     background(0);
-    textSize(150);
+    textSize(80);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Controls`, width / 2, height);
+    text(`Controls`, width / 2, height - 680);
 
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Click on the red button to turn your tv on`, width / 2, 2 * height / 3);
+    text(`Click on the red button to turn your tv on`, width / 2, height - 570);
 
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Use the left and right arrow keys to switch between channels`, width / 2, 2 * height / 3);
+    text(`Use the left and right arrow keys to switch between channels`, width / 2, height - 500);
 
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Use the up and down arrow keys to tune your tv and get rid of the static`, width / 2, 2 * height / 3);
+    text(`Use the up and down arrow keys to tune your tv and get rid of the static`, width / 2, height - 430);
+
+    textSize(50);
+    fill(255, 0, 136);
+    textAlign(CENTER, CENTER);
+    text(`You can't just tune any channel!`, width / 2, height - 330);
 
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`You can't just tune any channel! Match the channel with the icon at the top left corner of your screen.`, width / 2, 2 * height / 3);
+    text(`Match the channel with the icon at the top left corner of your screen.`, width / 2, height - 230);
 
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Fail to get a match, and it's game over`, width / 2, 2 * height / 3);
+    text(`Fail to get a match, and it's game over`, width / 2, height - 160);
 
     textSize(34);
     fill(255);
     textAlign(CENTER, CENTER);
-    text(`Click to start`, width / 2, 2 * height / 3 + 50);
+    text(`Click to start`, width / 2, height - 80);
+    pop();
 }
 
 function simulation() { // simulation
@@ -161,6 +189,10 @@ function simulation() { // simulation
 
 function display() {
     background(0);
+
+    push();
+    image(icon, 0, 0, 150, 150);
+    pop();
 
     push();
     imageMode(CENTER);
@@ -193,6 +225,7 @@ function display() {
     fill(255, 0, 0);
     ellipse(button.x, button.y, button.size);
     pop();
+
 }
 
 function tune() { // change the opacity of the static gif 
@@ -290,11 +323,11 @@ function mousePressed() {
         state = `controls`;
     }
 
-    if (state === `controls`) {
+    else if (state === `controls`) {
         state = `simulation`;
     }
 
-    if (state === `tuned`) {
+    else if (state === `tuned`) {
         reset();
         state = `simulation`;
     }
@@ -331,4 +364,6 @@ function reset() {
     transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
 
     channel = random(program);
+
+    icon = random(category);
 }
