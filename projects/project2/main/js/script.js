@@ -61,7 +61,7 @@ function preload() {
     newsIcon = loadImage("assets/images/icon_news.png");
     weatherIcon = loadImage("assets/images/icon_weather.png");
 
-    category.push(vhsIcon, filmIcon, musicIcon, newsIcon, weatherIcon);
+    category.push(vhsIcon, cartoonIcon, filmIcon, infoIcon, musicIcon, newsIcon, weatherIcon);
 
     staticGif = loadImage("assets/images/static.gif");
     vhsGif = loadImage("assets/images/vhs.gif");
@@ -90,8 +90,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
 
     //sets up button position
-    button.x = width / 4 + 680;
-    button.y = height / 4 + 350;
+    button.x = width / 4 + 810;
+    button.y = height / 4 + 550;
 
     transparency = random(50, 230); //alpha of static is randomized everytime the page is refreshed
 
@@ -198,7 +198,7 @@ function display() {
     background(backgroundImage);
 
     push();
-    image(icon, 0, 0, 150, 150);
+    image(icon, 0, 0, 250, 250);
     pop();
 
     push();
@@ -210,27 +210,27 @@ function display() {
     rectMode(CENTER);
     noStroke();
     fill(0);
-    rect(width / 2, height / 2, 800, 500);
+    rect(width / 2, height / 2 + 130, 800, 500);
     pop();
 
     if (tvstate === `on`) { // display gifs, with static gif superimposed with a lower opacity (when red button is clicked)
         // vhs program
         push();
         imageMode(CENTER);
-        image(channel, width / 2 - 75, height / 2, 600, 500);
+        image(channel, width / 2 - 75, height / 2 + 130, 600, 500);
         pop();
 
         // static
         push();
         tint(255, transparency);
         imageMode(CENTER);
-        image(staticGif, width / 2 - 75, height / 2, 600, 500);
+        image(staticGif, width / 2 - 75, height / 2 + 130, 600, 500);
         pop();
     }
 
     push();
     imageMode(CENTER);
-    image(tvImage, width / 2, height / 2, 900, 600);
+    image(tvImage, width / 2, height / 2 + 130, 900, 600);
     pop();
 
     // button
@@ -312,6 +312,7 @@ function wrong() {
 }
 
 function keyPressed() {
+    // cycles through the channels in order rather than generating a random channel everytime a key is pressed
     if (keyCode === RIGHT_ARROW) {
         if (channel === cartoonGif) {
             channel = filmGif;
@@ -338,6 +339,7 @@ function keyPressed() {
         transparency = random(50, 230);
         buttonSFX.play();
     }
+    // reverses the order of the images
     if (keyCode === LEFT_ARROW) {
         if (channel === cartoonGif) {
             channel = vhsGif;
@@ -378,6 +380,10 @@ function mousePressed() {
         reset();
         state = `simulation`;
     }
+    else if (state === `wrong`) {
+        reset();
+        state = `simulation`;
+    }
 
 
     // allows player to turn on the tv
@@ -392,8 +398,8 @@ function mousePressed() {
         tvstate = `off`; // allows me to turn my tv on if i press the red button
 
         //sets up button position
-        button.x = width / 4 + 680;
-        button.y = height / 4 + 350;
+        button.x = width / 4 + 810;
+        button.y = height / 4 + 550;
 
         transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
 
