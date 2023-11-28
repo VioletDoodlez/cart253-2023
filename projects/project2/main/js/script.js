@@ -118,6 +118,9 @@ function draw() {
         tuned();
         //noLoop(); //prevents toneSFX from looping
     }
+    else if (state === `wrong`) {
+        wrong();
+    }
 
 }
 
@@ -254,8 +257,29 @@ function tune() { // change the opacity of the static gif
 }
 
 function checkStatic() {
-    if (transparency === 0) {
+    if (transparency === 0 && icon === vhsIcon && channel === vhsGif) {
         state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+    }
+    else if (transparency === 0 && icon === cartoonIcon && channel === cartoonGif) {
+        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+    }
+    else if (transparency === 0 && icon === filmIcon && channel === filmGif) {
+        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+    }
+    else if (transparency === 0 && icon === infoIcon && channel === infoGif) {
+        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+    }
+    else if (transparency === 0 && icon === musicIcon && channel === musicGif) {
+        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+    }
+    else if (transparency === 0 && icon === newsIcon && channel === newsGif) {
+        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+    }
+    else if (transparency === 0 && icon === weatherIcon && channel === weatherGif) {
+        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+    }
+    else if (transparency === 0) {
+        state = `wrong`;
     }
 }
 
@@ -271,6 +295,20 @@ function tuned() { // ending "screen"
     fill(255);
     textAlign(CENTER, CENTER);
     text(`You got a clear image!`, width / 2, 2 * height / 3);
+}
+
+function wrong() {
+    push();
+    textSize(150);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Oops! Wrong channel!`, width / 2, height / 2);
+
+    textSize(34);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(`Try again?`, width / 2, 2 * height / 3);
+    pop();
 }
 
 function keyPressed() {
@@ -333,11 +371,9 @@ function mousePressed() {
     if (state === `title`) {
         state = `controls`;
     }
-
     else if (state === `controls`) {
         state = `simulation`;
     }
-
     else if (state === `tuned`) {
         reset();
         state = `simulation`;
