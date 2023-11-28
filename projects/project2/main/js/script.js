@@ -12,6 +12,8 @@ let button = {
     y: undefined,
     size: 20
 }
+
+
 let vhsIcon;
 let cartoonIcon;
 let filmIcon;
@@ -29,6 +31,7 @@ let musicGif;
 let newsGif;
 let weatherGif;
 
+let backgroundImage;
 let tvImage;
 let tableImage;
 
@@ -51,9 +54,9 @@ let tvstate = `off`; // allows me to turn my tv on if i press the red button
 */
 function preload() {
     vhsIcon = loadImage("assets/images/icon_vhs.png");
-    //cartoonIcon = loadImage("assets/images/icon_cartoon.png");
+    cartoonIcon = loadImage("assets/images/icon_cartoon.png");
     filmIcon = loadImage("assets/images/icon_film.png");
-    //infoIcon = loadImage("assets/images/icon_info.png");
+    infoIcon = loadImage("assets/images/icon_info.png");
     musicIcon = loadImage("assets/images/icon_music.png");
     newsIcon = loadImage("assets/images/icon_news.png");
     weatherIcon = loadImage("assets/images/icon_weather.png");
@@ -71,6 +74,7 @@ function preload() {
 
     program.push(vhsGif, cartoonGif, filmGif, infoGif, musicGif, newsGif, weatherGif);
 
+    backgroundImage = loadImage("assets/images/backgroundblur.png");
     tvImage = loadImage("assets/images/tv.jpg");
     tableImage = loadImage("assets/images/table.png");
 
@@ -188,7 +192,7 @@ function simulation() { // simulation
 }
 
 function display() {
-    background(0);
+    background(backgroundImage);
 
     push();
     image(icon, 0, 0, 150, 150);
@@ -197,6 +201,13 @@ function display() {
     push();
     imageMode(CENTER);
     image(tableImage, width / 2, height + 200, 1500, 700);
+    pop();
+
+    push();
+    rectMode(CENTER);
+    noStroke();
+    fill(0);
+    rect(width / 2, height / 2, 800, 500);
     pop();
 
     if (tvstate === `on`) { // display gifs, with static gif superimposed with a lower opacity (when red button is clicked)
@@ -351,6 +362,8 @@ function mousePressed() {
         transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
 
         channel = random(program);
+
+        icon = random(category);
     }
 }
 
