@@ -31,6 +31,16 @@ let musicGif;
 let newsGif;
 let weatherGif;
 
+let vhsSFX;
+let cartoonSFX;
+let filmSFX;
+let infoSFX;
+let musicSFX;
+let newsSFX;
+let weatherSFX;
+
+let buttonSFX;
+
 let backgroundImage;
 let tvImage;
 let tableImage;
@@ -40,9 +50,6 @@ let category = [];
 
 let channel;
 let icon;
-
-let toneSFX;
-let buttonSFX;
 
 let transparency = undefined; //make my transparency a variable to trigger an ending easily;
 
@@ -78,7 +85,8 @@ function preload() {
     tvImage = loadImage("assets/images/tv.jpg");
     tableImage = loadImage("assets/images/table.png");
 
-    toneSFX = loadSound("assets/sounds/tone.wav");
+    vhsSFX = loadSound("assets/sounds/LadyBlue.mp3");
+
     buttonSFX = loadSound("assets/sounds/switch.wav");
 }
 
@@ -98,6 +106,8 @@ function setup() {
     channel = random(program);
 
     icon = random(category);
+
+    userStartAudio();
 }
 
 
@@ -116,10 +126,11 @@ function draw() {
     }
     else if (state === `tuned`) {
         tuned();
-        //noLoop(); //prevents toneSFX from looping
+        noLoop(); //prevents toneSFX from looping
     }
     else if (state === `wrong`) {
         wrong();
+        noLoop(); //prevents toneSFX from looping
     }
 
 }
@@ -283,6 +294,15 @@ function checkStatic() {
     }
 }
 
+function checkSound() {
+    if (channel === vhsGif && tvstate === `on`) {
+        vhsSFX.play();
+    }
+    else if (channel === cartoonGif) {
+
+    }
+}
+
 function tuned() { // ending "screen"
     //toneSFX.play(); // plays sound effect
 
@@ -309,10 +329,13 @@ function wrong() {
     textAlign(CENTER, CENTER);
     text(`Try again?`, width / 2, 2 * height / 3);
     pop();
+
+    noLoop();
 }
 
 function keyPressed() {
     // cycles through the channels in order rather than generating a random channel everytime a key is pressed
+
     if (keyCode === RIGHT_ARROW) {
         if (channel === cartoonGif) {
             channel = filmGif;
@@ -331,9 +354,11 @@ function keyPressed() {
         }
         else if (channel === weatherGif) {
             channel = vhsGif;
+            checkSound();
         }
         else if (channel === vhsGif) {
             channel = cartoonGif;
+            vhsSFX.stop();
         }
 
         transparency = random(50, 230);
@@ -343,9 +368,11 @@ function keyPressed() {
     if (keyCode === LEFT_ARROW) {
         if (channel === cartoonGif) {
             channel = vhsGif;
+            checkSound();
         }
         else if (channel === vhsGif) {
             channel = weatherGif;
+            vhsSFX.stop();
         }
         else if (channel === weatherGif) {
             channel = newsGif;
@@ -421,4 +448,6 @@ function reset() {
     channel = random(program);
 
     icon = random(category);
+
+    userStartAudio();
 }
