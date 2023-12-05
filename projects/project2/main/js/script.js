@@ -13,6 +13,13 @@ let button = {
     size: 20
 }
 
+let menu = {
+    x: undefined,
+    y: undefined,
+    w: 250,
+    h: 100
+}
+
 
 let vhsIcon;
 let cartoonIcon;
@@ -47,16 +54,16 @@ let tableImage;
 
 let program = [];
 let category = [];
-let audio = [];
 
 let channel;
 let icon;
-let sound;
 
 let transparency = undefined; //make my transparency a variable to trigger an ending easily;
 
 let state = `title`;
 let tvstate = `off`; // allows me to turn my tv on if i press the red button
+let menustate = `down`;
+let soundstate = `off`; //plays music when the tv turns on
 
 /**
  * Description of preload
@@ -110,6 +117,8 @@ function setup() {
     //sets up button position
     button.x = width / 4 + 810;
     button.y = height / 4 + 550;
+    menu.x = width - 150;
+    menu.y = height - 50;
 
     transparency = random(50, 230); //alpha of static is randomized everytime the page is refreshed
 
@@ -128,19 +137,17 @@ function draw() {
     if (state === `title`) {
         title();
     }
-    else if (state === `controls`) {
-        controls();
-    }
+    // else if (state === `controls`) {
+    //     controls();
+    // }
     else if (state === `simulation`) {
         simulation();
     }
     else if (state === `tuned`) {
         tuned();
-        //prevents toneSFX from looping
     }
     else if (state === `wrong`) {
         wrong();
-        noLoop(); //prevents toneSFX from looping
     }
 
 }
@@ -164,50 +171,50 @@ function title() { //title screen
     text(`Click to see controls`, width / 2, 2 * height / 3 + 50);
 }
 
-function controls() {
-    push();
-    background(0);
-    textSize(80);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Controls`, width / 2, height - 680);
+// function controls() {
+//     push();
+//     background(0);
+//     textSize(80);
+//     fill(255);
+//     textAlign(CENTER, CENTER);
+//     text(`Controls`, width / 2, height - 680);
 
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Click on the red button to turn your tv on`, width / 2, height - 570);
+//     textSize(34);
+//     fill(255);
+//     textAlign(CENTER, CENTER);
+//     text(`Click on the red button to turn your tv on`, width / 2, height - 570);
 
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Use the left and right arrow keys to switch between channels`, width / 2, height - 500);
+//     textSize(34);
+//     fill(255);
+//     textAlign(CENTER, CENTER);
+//     text(`Use the left and right arrow keys to switch between channels`, width / 2, height - 500);
 
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Use the up and down arrow keys to tune your tv and get rid of the static`, width / 2, height - 430);
+//     textSize(34);
+//     fill(255);
+//     textAlign(CENTER, CENTER);
+//     text(`Use the up and down arrow keys to tune your tv and get rid of the static`, width / 2, height - 430);
 
-    textSize(50);
-    fill(255, 0, 136);
-    textAlign(CENTER, CENTER);
-    text(`You can't just tune any channel!`, width / 2, height - 330);
+//     textSize(50);
+//     fill(255, 0, 136);
+//     textAlign(CENTER, CENTER);
+//     text(`You can't just tune any channel!`, width / 2, height - 330);
 
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Match the channel with the icon at the top left corner of your screen.`, width / 2, height - 230);
+//     textSize(34);
+//     fill(255);
+//     textAlign(CENTER, CENTER);
+//     text(`Match the channel with the icon at the top left corner of your screen.`, width / 2, height - 230);
 
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Fail to get a match, and it's game over`, width / 2, height - 160);
+//     textSize(34);
+//     fill(255);
+//     textAlign(CENTER, CENTER);
+//     text(`Fail to get a match, and it's game over`, width / 2, height - 160);
 
-    textSize(34);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(`Click to start`, width / 2, height - 80);
-    pop();
-}
+//     textSize(34);
+//     fill(255);
+//     textAlign(CENTER, CENTER);
+//     text(`Click to start`, width / 2, height - 80);
+//     pop();
+// }
 
 function simulation() { // simulation
     display();
@@ -261,6 +268,65 @@ function display() {
     ellipse(button.x, button.y, button.size);
     pop();
 
+    push();
+    rectMode(CENTER);
+    stroke(255);
+    fill(0);
+    rect(menu.x, menu.y, menu.w, menu.h);
+    pop();
+
+    push();
+    fill(255);
+    triangle(width - 150, height - 90, width - 255, height - 10, width - 40, height - 10);
+    pop();
+
+    if (menustate === `up`) {
+        menu.h = menu.h + 10;
+        menu.h = constrain(menu.x, 0, 900);
+
+        push();
+        textSize(30);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        text(`Controls`, width - 150, height - 480);
+
+        textSize(14);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        text(`Click on the red button to`, width - 150, height - 440);
+        text(`turn your tv on.`, width - 150, height - 420);
+
+        textSize(14);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        text(`Surf the channels with`, width - 150, height - 380);
+        text(`the left and right arrow.`, width - 150, height - 360);
+
+        textSize(11);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        text(`Tune your tv with `, width - 150, height - 320);
+        text(`the up and down arrow keys.`, width - 150, height - 300);
+
+        textSize(17);
+        fill(255, 0, 136);
+        textAlign(CENTER, CENTER);
+        text(`You can't just tune any channel!`, width - 150, height - 260);
+
+        textSize(14);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        text(`The icon at the top left corner of your`, width - 150, height - 210);
+        text(`screen indicates a channel theme`, width - 150, height - 190);
+
+        textSize(14);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        text(`Match the channel with`, width - 150, height - 140);
+        text(`the corresponding icon.`, width - 150, height - 120);
+
+        pop();
+    }
 }
 
 function tune() { // change the opacity of the static gif 
@@ -305,26 +371,29 @@ function checkStatic() {
 }
 
 function checkSound() {
-    if (channel === vhsGif && tvstate === `on`) {
-        vhsSFX.play();
-    }
-    else if (channel === cartoonGif && tvstate === `on`) {
-        cartoonSFX.play();
-    }
-    else if (channel === filmGif && tvstate === `on`) {
-        filmSFX.play();
-    }
-    else if (channel === infoGif && tvstate === `on`) {
-        infoSFX.play();
-    }
-    else if (channel === musicGif && tvstate === `on`) {
-        musicSFX.play();
-    }
-    else if (channel === newsGif && tvstate === `on`) {
-        newsSFX.play();
-    }
-    else if (channel === weatherGif && tvstate === `on`) {
-        weatherSFX.play();
+    if (soundstate === `on`) {
+
+        if (channel === vhsGif) {
+            vhsSFX.play();
+        }
+        else if (channel === cartoonGif) {
+            cartoonSFX.play();
+        }
+        else if (channel === filmGif) {
+            filmSFX.play();
+        }
+        else if (channel === infoGif) {
+            infoSFX.play();
+        }
+        else if (channel === musicGif) {
+            musicSFX.play();
+        }
+        else if (channel === newsGif) {
+            newsSFX.play();
+        }
+        else if (channel === weatherGif) {
+            weatherSFX.play();
+        }
     }
 }
 
@@ -354,8 +423,6 @@ function wrong() {
     textAlign(CENTER, CENTER);
     text(`Try again?`, width / 2, 2 * height / 3);
     pop();
-
-    noLoop();
 }
 
 function keyPressed() {
@@ -453,16 +520,34 @@ function mousePressed() {
     let d = dist(button.x, button.y, mouseX, mouseY);
     if (d < button.size / 2) {
         tvstate = `on`;
-        console.log("hello");
+        soundstate = `on`;
+        console.log("power on");
         buttonSFX.play();
+    }
+
+    let cd = dist(menu.x, menu.y, mouseX, mouseY);
+    if (cd < menu.w || cd < menu.h) {
+        menustate = `up`;
+        console.log("up");
     }
 
     function reset() {
         tvstate = `off`; // allows me to turn my tv on if i press the red button
+        soundstate = `off`; //plays music when the tv turns on
+
+        vhsSFX.stop();
+        cartoonSFX.stop();
+        filmSFX.stop();
+        infoSFX.stop();
+        musicSFX.stop();
+        newsSFX.stop();
+        weatherSFX.stop();
 
         //sets up button position
         button.x = width / 4 + 810;
         button.y = height / 4 + 550;
+        menu.x = width - 150;
+        menu.y = height - 50;
 
         transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
 
@@ -472,18 +557,18 @@ function mousePressed() {
     }
 }
 
-function reset() {
-    tvstate = `off`; // allows me to turn my tv on if i press the red button
+// function reset() {
+//     tvstate = `off`; // allows me to turn my tv on if i press the red button
 
-    //sets up button position
-    button.x = width / 4 + 680;
-    button.y = height / 4 + 350;
+//     //sets up button position
+//     button.x = width / 4 + 680;
+//     button.y = height / 4 + 350;
 
-    transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
+//     transparency = random(50, 500); //alpha of static is randomized everytime the page is refreshed
 
-    channel = random(program);
+//     channel = random(program);
 
-    icon = random(category);
+//     icon = random(category);
 
-    userStartAudio();
-}
+//     userStartAudio();
+// }
