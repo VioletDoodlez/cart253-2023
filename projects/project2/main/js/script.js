@@ -20,16 +20,6 @@ let menu = {
     h: 100
 }
 
-let arrow = {
-    x1: undefined,
-    y1: undefined,
-    x2: undefined,
-    y2: undefined,
-    x3: undefined,
-    y3: undefined,
-
-}
-
 
 let vhsIcon;
 let cartoonIcon;
@@ -109,6 +99,10 @@ function preload() {
     tvImage = loadImage("assets/images/tv.jpg");
     tableImage = loadImage("assets/images/table.png");
 
+
+    stormSFX = loadSound("assets/sounds/stormSFX.mp3");
+    fireplaceSFX = loadSound("assets/sounds/fireplaceSFX.mp3");
+    staticSFX = loadSound("assets/sounds/staticSFX.mp3"); //plays static
     vhsSFX = loadSound("assets/sounds/LadyBlue.mp3"); //plays Lady Blue by Epoch
     cartoonSFX = loadSound("assets/sounds/Jem.mp3"); //plays the extended version of the Jem and the Holograms theme song
     filmSFX = loadSound("assets/sounds/BloodDragon.mp3"); //plays Blood Dragon Theme by Power Glove
@@ -118,8 +112,6 @@ function preload() {
     weatherSFX = loadSound("assets/sounds/LocalTime.mp3"); //plays local time by vcr-classique
 
     // audio.push(vhsSFX, cartoonSFX, filmSFX, infoSFX, musicSFX, newsSFX, weatherSFX);
-
-    staticSFX = loadSound("assets/sounds/staticSFX.mp3");
 
     buttonSFX = loadSound("assets/sounds/switch.wav");
 }
@@ -137,13 +129,6 @@ function setup() {
 
     menu.x = width - 150;
     menu.y = height - 50;
-
-    arrow.x1 = width - 150;
-    arrow.y1 = height - 90;
-    arrow.x2 = width - 255;
-    arrow.y2 = height - 10;
-    arrow.x3 = width - 40;
-    arrow.y3 = height - 10;
 
     transparency = random(50, 230); //alpha of static is randomized everytime the page is refreshed
     tvvolume = random(0.01, 0.05);
@@ -272,10 +257,12 @@ function display() {
 
     push();
     fill(255);
-    triangle(arrow.x1, arrow.y1, arrow.x2, arrow.y2, arrow.x3, arrow.y3);
+    triangle(width - 150, height - 90, width - 255, height - 10, width - 40, height - 10);
     pop();
 
     if (menustate === `up`) {
+        menu.h = menu.h + 900
+        menu.h = constrain(menu.x, 0, 900);
 
         push();
         textSize(30);
@@ -343,33 +330,48 @@ function tune() { // change the opacity of the static gif
 }
 
 function checkStatic() {
-    if (transparency === 0 && icon === vhsIcon && channel === vhsGif) {
-        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-    }
-    else if (transparency === 0 && icon === cartoonIcon && channel === cartoonGif) {
-        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-    }
-    else if (transparency === 0 && icon === filmIcon && channel === filmGif) {
-        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-    }
-    else if (transparency === 0 && icon === infoIcon && channel === infoGif) {
-        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-    }
-    else if (transparency === 0 && icon === musicIcon && channel === musicGif) {
-        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-    }
-    else if (transparency === 0 && icon === newsIcon && channel === newsGif) {
-        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-    }
-    else if (transparency === 0 && icon === weatherIcon && channel === weatherGif) {
-        state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-    }
-    else if (transparency === 0) {
-        state = `wrong`;
+
+    if (transparency === 0) {
+        if (icon === vhsIcon && channel === vhsGif) {
+            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+        }
+        else if (icon === cartoonIcon && channel === cartoonGif) {
+            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+        }
+        else if (icon === filmIcon && channel === filmGif) {
+            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+        }
+        else if (icon === infoIcon && channel === infoGif) {
+            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+        }
+        else if (icon === musicIcon && channel === musicGif) {
+            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+        }
+        else if (icon === newsIcon && channel === newsGif) {
+            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+        }
+        else if (icon === weatherIcon && channel === weatherGif) {
+            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+        }
+        else {
+            state = `wrong`;
+            staticSFX.stop();
+            vhsSFX.stop();
+            cartoonSFX.stop();
+            filmSFX.stop();
+            infoSFX.stop();
+            musicSFX.stop();
+            newsSFX.stop();
+            weatherSFX.stop();
+        }
     }
 }
 
 function checkSound() {
+    if (state === `simulation`) {
+        //stormSFX.loop();
+        fireplaceSFX.loop();
+    }
 
     if (tvstate === `on`) {
         staticSFX.play();
@@ -505,8 +507,11 @@ function keyPressed() {
 function mousePressed() {
     //starts simulation
     if (state === `title`) {
+        stormSFX.play();
+        stormSFX.setVolume(0.1);
+        fireplaceSFX.play();
+        fireplaceSFX.setVolume(0.5);
         state = `simulation`;
-
     }
     else if (state === `tuned`) {
         reset();
