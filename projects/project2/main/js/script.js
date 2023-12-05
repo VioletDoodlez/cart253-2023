@@ -47,9 +47,11 @@ let tableImage;
 
 let program = [];
 let category = [];
+let audio = [];
 
 let channel;
 let icon;
+let sound;
 
 let transparency = undefined; //make my transparency a variable to trigger an ending easily;
 
@@ -86,6 +88,14 @@ function preload() {
     tableImage = loadImage("assets/images/table.png");
 
     vhsSFX = loadSound("assets/sounds/LadyBlue.mp3");
+    cartoonSFX = loadSound("assets/sounds/Jem.mp3");
+    filmSFX = loadSound("assets/sounds/BloodDragon.mp3");
+    infoSFX = loadSound("assets/sounds/SundayShopping.mp3");
+    musicSFX = loadSound("assets/sounds/MaterialGirl.mp3");
+    newsSFX = loadSound("assets/sounds/LonesomeCity.mp3");
+    weatherSFX = loadSound("assets/sounds/LocalTime.mp3");
+
+
 
     buttonSFX = loadSound("assets/sounds/switch.wav");
 }
@@ -126,7 +136,7 @@ function draw() {
     }
     else if (state === `tuned`) {
         tuned();
-        noLoop(); //prevents toneSFX from looping
+        //prevents toneSFX from looping
     }
     else if (state === `wrong`) {
         wrong();
@@ -298,8 +308,23 @@ function checkSound() {
     if (channel === vhsGif && tvstate === `on`) {
         vhsSFX.play();
     }
-    else if (channel === cartoonGif) {
-
+    else if (channel === cartoonGif && tvstate === `on`) {
+        cartoonSFX.play();
+    }
+    else if (channel === filmGif && tvstate === `on`) {
+        filmSFX.play();
+    }
+    else if (channel === infoGif && tvstate === `on`) {
+        infoSFX.play();
+    }
+    else if (channel === musicGif && tvstate === `on`) {
+        musicSFX.play();
+    }
+    else if (channel === newsGif && tvstate === `on`) {
+        newsSFX.play();
+    }
+    else if (channel === weatherGif && tvstate === `on`) {
+        weatherSFX.play();
     }
 }
 
@@ -335,26 +360,30 @@ function wrong() {
 
 function keyPressed() {
     // cycles through the channels in order rather than generating a random channel everytime a key is pressed
-
     if (keyCode === RIGHT_ARROW) {
         if (channel === cartoonGif) {
             channel = filmGif;
+            cartoonSFX.stop();
         }
         else if (channel === filmGif) {
             channel = infoGif;
+            filmSFX.stop();
         }
         else if (channel === infoGif) {
             channel = musicGif;
+            infoSFX.stop();
         }
         else if (channel === musicGif) {
             channel = newsGif;
+            musicSFX.stop();
         }
         else if (channel === newsGif) {
             channel = weatherGif;
+            newsSFX.stop();
         }
         else if (channel === weatherGif) {
             channel = vhsGif;
-            checkSound();
+            weatherSFX.stop();
         }
         else if (channel === vhsGif) {
             channel = cartoonGif;
@@ -363,12 +392,13 @@ function keyPressed() {
 
         transparency = random(50, 230);
         buttonSFX.play();
+        checkSound();
     }
     // reverses the order of the images
     if (keyCode === LEFT_ARROW) {
         if (channel === cartoonGif) {
             channel = vhsGif;
-            checkSound();
+            cartoonSFX.stop();
         }
         else if (channel === vhsGif) {
             channel = weatherGif;
@@ -376,22 +406,28 @@ function keyPressed() {
         }
         else if (channel === weatherGif) {
             channel = newsGif;
+            weatherSFX.stop();
         }
         else if (channel === newsGif) {
             channel = musicGif;
+            newsSFX.stop();
         }
         else if (channel === musicGif) {
             channel = infoGif;
+            musicSFX.stop();
         }
         else if (channel === infoGif) {
             channel = filmGif;
+            infoSFX.stop();
         }
         else if (channel === filmGif) {
             channel = cartoonGif;
+            filmSFX.stop();
         }
 
         transparency = random(50, 230);
         buttonSFX.play();
+        checkSound();
     }
 }
 
