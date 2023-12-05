@@ -54,16 +54,18 @@ let tableImage;
 
 let program = [];
 let category = [];
+let audio = [];
 
 let channel;
 let icon;
+let sound;
 
 let transparency = undefined; //make my transparency a variable to trigger an ending easily;
+let volume = undefined;
 
 let state = `title`;
 let tvstate = `off`; // allows me to turn my tv on if i press the red button
 let menustate = `down`;
-let soundstate = `off`; //plays music when the tv turns on
 
 /**
  * Description of preload
@@ -102,8 +104,6 @@ function preload() {
     newsSFX = loadSound("assets/sounds/LonesomeCity.mp3");
     weatherSFX = loadSound("assets/sounds/LocalTime.mp3");
 
-
-
     buttonSFX = loadSound("assets/sounds/switch.wav");
 }
 
@@ -121,6 +121,7 @@ function setup() {
     menu.y = height - 50;
 
     transparency = random(50, 230); //alpha of static is randomized everytime the page is refreshed
+    volume = 0.5; //random(0.05, 0.5);
 
     channel = random(program);
 
@@ -220,20 +221,21 @@ function simulation() { // simulation
     display();
     tune();
     checkStatic();
+    cartoonSFX.setVolume(volume);
 }
 
 function display() {
     background(backgroundImage);
-
+    //icon
     push();
-    image(icon, 0, 0, 250, 250);
+    image(icon, 0, 0, 150, 150);
     pop();
-
+    //table
     push();
     imageMode(CENTER);
     image(tableImage, width / 2, height + 200, 1500, 700);
     pop();
-
+    //blank screen
     push();
     rectMode(CENTER);
     noStroke();
@@ -255,7 +257,7 @@ function display() {
         image(staticGif, width / 2 - 75, height / 2 + 130, 600, 500);
         pop();
     }
-
+    //tv
     push();
     imageMode(CENTER);
     image(tvImage, width / 2, height / 2 + 130, 900, 600);
@@ -331,15 +333,18 @@ function display() {
 
 function tune() { // change the opacity of the static gif 
     if (keyIsDown(UP_ARROW)) { // background image gets clearer
+        volume = volume + 0.01;
         transparency = transparency - 1;
-        transparency = constrain(transparency, 0, 255);
     }
     else if (keyIsDown(DOWN_ARROW)) { // static takes over
+        volume = volume - 0.01;
         transparency = transparency + 1;
-        transparency = constrain(transparency, 0, 255);
-
     }
 
+    transparency = constrain(transparency, 0, 255);
+    volume = constrain(volume, 0, 1);
+
+    console.log(volume);
     console.log(transparency); // make sure the transparency is changing
 }
 
@@ -371,28 +376,35 @@ function checkStatic() {
 }
 
 function checkSound() {
-    if (soundstate === `on`) {
 
+    if (tvstate === `on`) {
         if (channel === vhsGif) {
             vhsSFX.play();
+            // vhsSFX.setVolume(volume);
         }
         else if (channel === cartoonGif) {
             cartoonSFX.play();
+            cartoonSFX.setVolume(volume);
         }
         else if (channel === filmGif) {
             filmSFX.play();
+            // filmSFX.setVolume(volume);
         }
         else if (channel === infoGif) {
             infoSFX.play();
+            // infoSFX.setVolume(volume);
         }
         else if (channel === musicGif) {
             musicSFX.play();
+            // musicSFX.setVolume(volume);
         }
         else if (channel === newsGif) {
             newsSFX.play();
+            // newsSFX.setVolume(volume);
         }
         else if (channel === weatherGif) {
             weatherSFX.play();
+            // newsSFX.setVolume(volume);
         }
     }
 }
@@ -427,83 +439,82 @@ function wrong() {
 
 function keyPressed() {
     // cycles through the channels in order rather than generating a random channel everytime a key is pressed
-    if (keyCode === RIGHT_ARROW) {
-        if (channel === cartoonGif) {
-            channel = filmGif;
-            cartoonSFX.stop();
-        }
-        else if (channel === filmGif) {
-            channel = infoGif;
-            filmSFX.stop();
-        }
-        else if (channel === infoGif) {
-            channel = musicGif;
-            infoSFX.stop();
-        }
-        else if (channel === musicGif) {
-            channel = newsGif;
-            musicSFX.stop();
-        }
-        else if (channel === newsGif) {
-            channel = weatherGif;
-            newsSFX.stop();
-        }
-        else if (channel === weatherGif) {
-            channel = vhsGif;
-            weatherSFX.stop();
-        }
-        else if (channel === vhsGif) {
-            channel = cartoonGif;
-            vhsSFX.stop();
-        }
+    if (tvstate === `on`) {
+        if (keyCode === RIGHT_ARROW) {
+            if (channel === cartoonGif) {
+                channel = filmGif;
+                cartoonSFX.stop();
+            }
+            else if (channel === filmGif) {
+                channel = infoGif;
+                filmSFX.stop();
+            }
+            else if (channel === infoGif) {
+                channel = musicGif;
+                infoSFX.stop();
+            }
+            else if (channel === musicGif) {
+                channel = newsGif;
+                musicSFX.stop();
+            }
+            else if (channel === newsGif) {
+                channel = weatherGif;
+                newsSFX.stop();
+            }
+            else if (channel === weatherGif) {
+                channel = vhsGif;
+                weatherSFX.stop();
+            }
+            else if (channel === vhsGif) {
+                channel = cartoonGif;
+                vhsSFX.stop();
+            }
 
-        transparency = random(50, 230);
-        buttonSFX.play();
-        checkSound();
-    }
-    // reverses the order of the images
-    if (keyCode === LEFT_ARROW) {
-        if (channel === cartoonGif) {
-            channel = vhsGif;
-            cartoonSFX.stop();
+            transparency = random(50, 230);
+            buttonSFX.play();
+            checkSound();
         }
-        else if (channel === vhsGif) {
-            channel = weatherGif;
-            vhsSFX.stop();
-        }
-        else if (channel === weatherGif) {
-            channel = newsGif;
-            weatherSFX.stop();
-        }
-        else if (channel === newsGif) {
-            channel = musicGif;
-            newsSFX.stop();
-        }
-        else if (channel === musicGif) {
-            channel = infoGif;
-            musicSFX.stop();
-        }
-        else if (channel === infoGif) {
-            channel = filmGif;
-            infoSFX.stop();
-        }
-        else if (channel === filmGif) {
-            channel = cartoonGif;
-            filmSFX.stop();
-        }
+        // reverses the order of the images
+        if (keyCode === LEFT_ARROW) {
+            if (channel === cartoonGif) {
+                channel = vhsGif;
+                cartoonSFX.stop();
+            }
+            else if (channel === vhsGif) {
+                channel = weatherGif;
+                vhsSFX.stop();
+            }
+            else if (channel === weatherGif) {
+                channel = newsGif;
+                weatherSFX.stop();
+            }
+            else if (channel === newsGif) {
+                channel = musicGif;
+                newsSFX.stop();
+            }
+            else if (channel === musicGif) {
+                channel = infoGif;
+                musicSFX.stop();
+            }
+            else if (channel === infoGif) {
+                channel = filmGif;
+                infoSFX.stop();
+            }
+            else if (channel === filmGif) {
+                channel = cartoonGif;
+                filmSFX.stop();
+            }
 
-        transparency = random(50, 230);
-        buttonSFX.play();
-        checkSound();
+            transparency = random(50, 230);
+            buttonSFX.play();
+            checkSound();
+        }
     }
 }
 
 function mousePressed() {
     //starts simulation
     if (state === `title`) {
-        state = `controls`;
-    }
-    else if (state === `controls`) {
         state = `simulation`;
     }
     else if (state === `tuned`) {
@@ -520,20 +531,19 @@ function mousePressed() {
     let d = dist(button.x, button.y, mouseX, mouseY);
     if (d < button.size / 2) {
         tvstate = `on`;
-        soundstate = `on`;
+        checkSound();
         console.log("power on");
         buttonSFX.play();
     }
 
     let cd = dist(menu.x, menu.y, mouseX, mouseY);
-    if (cd < menu.w || cd < menu.h) {
+    if (cd < menu.w / 2 || cd < menu.h / 2) {
         menustate = `up`;
         console.log("up");
     }
 
     function reset() {
         tvstate = `off`; // allows me to turn my tv on if i press the red button
-        soundstate = `off`; //plays music when the tv turns on
 
         vhsSFX.stop();
         cartoonSFX.stop();
