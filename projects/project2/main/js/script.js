@@ -265,10 +265,24 @@ function display() { // displays shapes and images
     pop();
 
     if (menustate === `up`) { // displays controls
-        menu.h = menu.h + 900 // moves menu up
-        menu.h = constrain(menu.x, 0, 900); // prevents menu from exceeding a certain height
+
+        // push();
+        // menu.h = menu.h + 900 // moves menu up
+        // menu.h = constrain(menu.x, 0, 900); // prevents menu from exceeding a certain height
 
         push();
+        rectMode(CENTER);
+        stroke(255);
+        fill(0);
+        rect(menu.x, menu.y, menu.w, menu.h + 800);
+        pop();
+
+        push();
+        fill(255);
+        triangle(width - 150, height - 90, width - 255, height - 10, width - 40, height - 10);
+        pop();
+
+
         textSize(30);
         fill(255);
         textAlign(CENTER, CENTER);
