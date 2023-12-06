@@ -83,7 +83,7 @@ function preload() {
     newsIcon = loadImage("assets/images/icon_news.png");
     weatherIcon = loadImage("assets/images/icon_weather.png");
 
-    category.push(vhsIcon, cartoonIcon, filmIcon, infoIcon, musicIcon, newsIcon, weatherIcon); //puts all of the icons in the "category" array
+    category.push(vhsIcon, cartoonIcon, filmIcon, infoIcon, musicIcon, newsIcon, weatherIcon); // puts all of the icons in the "category" array
 
     staticGif = loadImage("assets/images/static.gif");
     vhsGif = loadImage("assets/images/vhs.gif");
@@ -94,25 +94,25 @@ function preload() {
     newsGif = loadImage("assets/images/news.gif");
     weatherGif = loadImage("assets/images/weather.gif");
 
-    program.push(vhsGif, cartoonGif, filmGif, infoGif, musicGif, newsGif, weatherGif); //puts all of the gifs in the "program" array
+    program.push(vhsGif, cartoonGif, filmGif, infoGif, musicGif, newsGif, weatherGif); // puts all of the gifs in the "program" array
 
     backgroundImage = loadImage("assets/images/backgroundblur.png");
     tvImage = loadImage("assets/images/tv.jpg");
     tableImage = loadImage("assets/images/table.png");
 
 
-    stormSFX = loadSound("assets/sounds/stormSFX.mp3");
-    fireplaceSFX = loadSound("assets/sounds/fireplaceSFX.mp3");
-    staticSFX = loadSound("assets/sounds/staticSFX.mp3"); //plays static
-    vhsSFX = loadSound("assets/sounds/LadyBlue.mp3"); //plays Lady Blue by Epoch
-    cartoonSFX = loadSound("assets/sounds/Jem.mp3"); //plays the extended version of the Jem and the Holograms theme song
-    filmSFX = loadSound("assets/sounds/BloodDragon.mp3"); //plays Blood Dragon Theme by Power Glove
-    infoSFX = loadSound("assets/sounds/SundayShopping.mp3"); //plays sunday shopping by vcr-classique
-    musicSFX = loadSound("assets/sounds/MaterialGirl.mp3"); //plays Material Girl by Madonna
-    newsSFX = loadSound("assets/sounds/LonesomeCity.mp3"); //plays lonesome city by vcr-classique
-    weatherSFX = loadSound("assets/sounds/LocalTime.mp3"); //plays local time by vcr-classique
+    stormSFX = loadSound("assets/sounds/stormSFX.mp3"); // plays storm ambience
+    fireplaceSFX = loadSound("assets/sounds/fireplaceSFX.mp3"); // plays fireplace ambience
+    staticSFX = loadSound("assets/sounds/staticSFX.mp3"); // plays static
+    vhsSFX = loadSound("assets/sounds/LadyBlue.mp3"); // plays Lady Blue by Epoch
+    cartoonSFX = loadSound("assets/sounds/Jem.mp3"); // plays the extended version of the Jem and the Holograms theme song
+    filmSFX = loadSound("assets/sounds/BloodDragon.mp3"); // plays Blood Dragon Theme by Power Glove
+    infoSFX = loadSound("assets/sounds/SundayShopping.mp3"); // plays sunday shopping by vcr-classique
+    musicSFX = loadSound("assets/sounds/MaterialGirl.mp3"); // plays Material Girl by Madonna
+    newsSFX = loadSound("assets/sounds/LonesomeCity.mp3"); // plays lonesome city by vcr-classique
+    weatherSFX = loadSound("assets/sounds/LocalTime.mp3"); // plays local time by vcr-classique
 
-    audio.push(vhsSFX, cartoonSFX, filmSFX, infoSFX, musicSFX, newsSFX, weatherSFX);
+    audio.push(vhsSFX, cartoonSFX, filmSFX, infoSFX, musicSFX, newsSFX, weatherSFX); // puts all of the music in the "audio" array
 
     buttonSFX = loadSound("assets/sounds/switch.wav");
 }
@@ -124,21 +124,22 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    //sets up button position
-    button.x = width / 4 + 810;
-    button.y = height / 4 + 550;
+    // sets button position
+    button.x = width / 4 + 680; //laptop view
+    button.y = height / 4 + 350; //laptop view
 
+    // sets menu position
     menu.x = width - 150;
     menu.y = height - 50;
 
-    transparency = random(50, 230); //alpha of static is randomized everytime the page is refreshed
-    tvvolume = random(0.01, 0.05);
-    staticvolume = random(0.1, 0.5);
+    transparency = random(50, 230); // alpha of static is randomized everytime the page is refreshed
+    tvvolume = random(0.01, 0.05); // music is randomized everytime the page is refreshed
+    staticvolume = random(0.1, 0.5); // alpha of static is randomized everytime the page is refreshed
 
-    channel = random(program);
-    idx = program.indexOf(channel);
+    channel = random(program); // channel variable generates random gif inside of program array
+    idx = program.indexOf(channel); // searches gif index
 
-    icon = random(category);
+    icon = random(category); // icon variable generates random icon inside of category array
 
     userStartAudio();
 }
@@ -200,43 +201,46 @@ function simulation() { // simulation
     weatherSFX.setVolume(tvvolume);
 }
 
-function display() {
+function display() { // displays shapes and images
     background(backgroundImage);
-    //icon
+
+    // icon
     push();
     image(icon, 0, 0, 150, 150);
     pop();
-    //table
+
+    // table
     push();
     imageMode(CENTER);
     image(tableImage, width / 2, height + 200, 1500, 700);
     pop();
-    //blank screen
+
+    // blank screen
     push();
     rectMode(CENTER);
     noStroke();
     fill(0);
-    rect(width / 2, height / 2 + 130, 800, 500);
+    rect(width / 2, height / 2 - 20, 800, 500);
     pop();
 
     if (tvstate === `on`) { // display gifs, with static gif superimposed with a lower opacity (when red button is clicked)
         // vhs program
         push();
         imageMode(CENTER);
-        image(channel, width / 2 - 75, height / 2 + 130, 600, 500);
+        image(channel, width / 2 - 75, height / 2, 600, 500);
         pop();
 
         // static
         push();
         tint(255, transparency);
         imageMode(CENTER);
-        image(staticGif, width / 2 - 75, height / 2 + 130, 600, 500);
+        image(staticGif, width / 2 - 75, height / 2, 600, 500);
         pop();
     }
     //tv
     push();
     imageMode(CENTER);
-    image(tvImage, width / 2, height / 2 + 130, 900, 600);
+    image(tvImage, width / 2, height / 2, 900, 600); //laptop view
     pop();
 
     // button
@@ -246,6 +250,7 @@ function display() {
     ellipse(button.x, button.y, button.size);
     pop();
 
+    // menu
     push();
     rectMode(CENTER);
     stroke(255);
@@ -253,12 +258,13 @@ function display() {
     rect(menu.x, menu.y, menu.w, menu.h);
     pop();
 
+    // arrow
     push();
     fill(255);
     triangle(width - 150, height - 90, width - 255, height - 10, width - 40, height - 10);
     pop();
 
-    if (menustate === `up`) {
+    if (menustate === `up`) { // displays controls
         menu.h = menu.h + 900 // moves menu up
         menu.h = constrain(menu.x, 0, 900); // prevents menu from exceeding a certain height
 
@@ -324,7 +330,7 @@ function tune() { // change the opacity of the static gif
     transparency = constrain(transparency, 0, 255);
 }
 
-function checkStatic() {
+function checkStatic() { // makes sure the correct screen is displayed
 
     if (transparency === 0) {
         if (icon === vhsIcon && channel === vhsGif || icon === cartoonIcon && channel === cartoonGif || icon === filmIcon && channel === filmGif || icon === infoIcon && channel === infoGif || icon === musicIcon && channel === musicGif || icon === newsIcon && channel === newsGif || icon === weatherIcon && channel === weatherGif) {
@@ -344,7 +350,7 @@ function checkStatic() {
     }
 }
 
-function checkSound() {
+function checkSound() { // plays audio
     // loops ambience (without it sounding weird)
     if (state === `simulation`) {
         stormSFX.loop();
@@ -357,27 +363,6 @@ function checkSound() {
 
         // plays corresponding music
         audio[idx].play();
-        // if (channel === vhsGif) {
-        //     vhsSFX.play();
-        // }
-        // else if (channel === cartoonGif) {
-        //     cartoonSFX.play();
-        // }
-        // else if (channel === filmGif) {
-        //     filmSFX.play();
-        // }
-        // else if (channel === infoGif) {
-        //     infoSFX.play();
-        // }
-        // else if (channel === musicGif) {
-        //     musicSFX.play();
-        // }
-        // else if (channel === newsGif) {
-        //     newsSFX.play();
-        // }
-        // else if (channel === weatherGif) {
-        //     weatherSFX.play();
-        // }
     }
 }
 
@@ -414,36 +399,6 @@ function keyPressed() {
             let nextidx;
             if (keyCode === RIGHT_ARROW) {
                 nextidx = (idx + 1) % program.length; // modulo arithmetic introduced by my dad
-
-
-                // if (channel === cartoonGif) {
-                //     channel = filmGif;
-                //     cartoonSFX.stop(); //stops the sound of the previous program to allow the next program's music to play
-                // }
-                // else if (channel === filmGif) {
-                //     channel = infoGif;
-                //     filmSFX.stop();
-                // }
-                // else if (channel === infoGif) {
-                //     channel = musicGif;
-                //     infoSFX.stop();
-                // }
-                // else if (channel === musicGif) {
-                //     channel = newsGif;
-                //     musicSFX.stop();
-                // }
-                // else if (channel === newsGif) {
-                //     channel = weatherGif;
-                //     newsSFX.stop();
-                // }
-                // else if (channel === weatherGif) {
-                //     channel = vhsGif;
-                //     weatherSFX.stop();
-                // }
-                // else if (channel === vhsGif) {
-                //     channel = cartoonGif;
-                //     vhsSFX.stop();
-                // }
             }
             // reverses the order of the images
             if (keyCode === LEFT_ARROW) {
@@ -453,34 +408,7 @@ function keyPressed() {
                 else {
                     nextidx = idx - 1;
                 }
-                // if (channel === cartoonGif) {
-                //     channel = vhsGif;
-                //     cartoonSFX.stop();
-                // }
-                // else if (channel === vhsGif) {
-                //     channel = weatherGif;
-                //     vhsSFX.stop();
-                // }
-                // else if (channel === weatherGif) {
-                //     channel = newsGif;
-                //     weatherSFX.stop();
-                // }
-                // else if (channel === newsGif) {
-                //     channel = musicGif;
-                //     newsSFX.stop();
-                // }
-                // else if (channel === musicGif) {
-                //     channel = infoGif;
-                //     musicSFX.stop();
-                // }
-                // else if (channel === infoGif) {
-                //     channel = filmGif;
-                //     infoSFX.stop();
-                // }
-                // else if (channel === filmGif) {
-                //     channel = cartoonGif;
-                //     filmSFX.stop();
-                // }
+
             }
             channel = program[nextidx]; // change channel to nextidx
             audio[idx].stop(); // stop prev audio
@@ -524,6 +452,7 @@ function mousePressed() {
         buttonSFX.play(); // plays sound when button is pressed
     }
 
+    // brings up controls menu
     let cd = dist(menu.x, menu.y, mouseX, mouseY);
     if (cd < menu.w / 2 || cd < menu.h / 2) {
         menustate = `up`;
@@ -545,8 +474,8 @@ function mousePressed() {
         weatherSFX.stop();
 
         //sets up button position
-        button.x = width / 4 + 810;
-        button.y = height / 4 + 550;
+        button.x = width / 4 + 680; //laptop view
+        button.y = height / 4 + 350; //laptop view
         menu.x = width - 150;
         menu.y = height - 50;
 
