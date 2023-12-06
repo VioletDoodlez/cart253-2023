@@ -266,10 +266,6 @@ function display() { // displays shapes and images
 
     if (menustate === `up`) { // displays controls
 
-        // push();
-        // menu.h = menu.h + 900 // moves menu up
-        // menu.h = constrain(menu.x, 0, 900); // prevents menu from exceeding a certain height
-
         push();
         rectMode(CENTER);
         stroke(255);
