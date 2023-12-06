@@ -2,7 +2,9 @@
  * Project 2
  * Nicole Covaliu
  * 
- * 
+ * Game where players need to tune a tv and switch channels, making
+ * sure that the channel corresponds with the correct icon at the top corner,
+ * indicating a channel category
  */
 
 "use strict";
