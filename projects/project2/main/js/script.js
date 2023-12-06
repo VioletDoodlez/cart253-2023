@@ -294,9 +294,9 @@ function display() { // displays shapes and images
         fill(255);
         textAlign(CENTER, CENTER);
         text(`Surf the channels with`, width - 150, height - 380);
-        text(`the left and right arrow.`, width - 150, height - 360);
+        text(`the left and right arrow keys.`, width - 150, height - 360);
 
-        textSize(11);
+        textSize(14);
         fill(255);
         textAlign(CENTER, CENTER);
         text(`Tune your tv with `, width - 150, height - 320);
