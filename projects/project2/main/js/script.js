@@ -58,6 +58,7 @@ let tableImage;
 let program = [];
 let category = [];
 let audio = [];
+let idx; // current channel
 
 let channel;
 let icon;
@@ -111,7 +112,7 @@ function preload() {
     newsSFX = loadSound("assets/sounds/LonesomeCity.mp3"); //plays lonesome city by vcr-classique
     weatherSFX = loadSound("assets/sounds/LocalTime.mp3"); //plays local time by vcr-classique
 
-    // audio.push(vhsSFX, cartoonSFX, filmSFX, infoSFX, musicSFX, newsSFX, weatherSFX);
+    audio.push(vhsSFX, cartoonSFX, filmSFX, infoSFX, musicSFX, newsSFX, weatherSFX);
 
     buttonSFX = loadSound("assets/sounds/switch.wav");
 }
@@ -135,6 +136,7 @@ function setup() {
     staticvolume = random(0.1, 0.5);
 
     channel = random(program);
+    idx = program.indexOf(channel);
 
     icon = random(category);
 
@@ -320,37 +322,16 @@ function tune() { // change the opacity of the static gif
     staticvolume = constrain(staticvolume, 0, 1);
     tvvolume = constrain(tvvolume, 0, 0.9);
     transparency = constrain(transparency, 0, 255);
-
-    console.log(tvvolume);
-    console.log(transparency); // make sure the transparency is changing
 }
 
 function checkStatic() {
 
     if (transparency === 0) {
-        if (icon === vhsIcon && channel === vhsGif) {
-            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-        }
-        else if (icon === cartoonIcon && channel === cartoonGif) {
-            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-        }
-        else if (icon === filmIcon && channel === filmGif) {
-            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-        }
-        else if (icon === infoIcon && channel === infoGif) {
-            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-        }
-        else if (icon === musicIcon && channel === musicGif) {
-            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-        }
-        else if (icon === newsIcon && channel === newsGif) {
-            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
-        }
-        else if (icon === weatherIcon && channel === weatherGif) {
-            state = `tuned`; // triggers ending if staticGif reaches 0 transparency
+        if (icon === vhsIcon && channel === vhsGif || icon === cartoonIcon && channel === cartoonGif || icon === filmIcon && channel === filmGif || icon === infoIcon && channel === infoGif || icon === musicIcon && channel === musicGif || icon === newsIcon && channel === newsGif || icon === weatherIcon && channel === weatherGif) {
+            state = `tuned`; // triggers win if staticGif reaches 0 transparency when icon and channel match
         }
         else {
-            state = `wrong`;
+            state = `wrong`; // triggers lose if staticGif reaches 0 transparency with wrong icons
             staticSFX.stop();
             vhsSFX.stop();
             cartoonSFX.stop();
@@ -375,27 +356,28 @@ function checkSound() {
         staticSFX.loop(); // loops static sound
 
         // plays corresponding music
-        if (channel === vhsGif) {
-            vhsSFX.play();
-        }
-        else if (channel === cartoonGif) {
-            cartoonSFX.play();
-        }
-        else if (channel === filmGif) {
-            filmSFX.play();
-        }
-        else if (channel === infoGif) {
-            infoSFX.play();
-        }
-        else if (channel === musicGif) {
-            musicSFX.play();
-        }
-        else if (channel === newsGif) {
-            newsSFX.play();
-        }
-        else if (channel === weatherGif) {
-            weatherSFX.play();
-        }
+        audio[idx].play();
+        // if (channel === vhsGif) {
+        //     vhsSFX.play();
+        // }
+        // else if (channel === cartoonGif) {
+        //     cartoonSFX.play();
+        // }
+        // else if (channel === filmGif) {
+        //     filmSFX.play();
+        // }
+        // else if (channel === infoGif) {
+        //     infoSFX.play();
+        // }
+        // else if (channel === musicGif) {
+        //     musicSFX.play();
+        // }
+        // else if (channel === newsGif) {
+        //     newsSFX.play();
+        // }
+        // else if (channel === weatherGif) {
+        //     weatherSFX.play();
+        // }
     }
 }
 
@@ -429,73 +411,86 @@ function keyPressed() {
     // cycles through the channels in order rather than generating a random channel everytime a key is pressed
     if (tvstate === `on`) {
         if (keyCode === RIGHT_ARROW || keyCode === LEFT_ARROW) {
+            let nextidx;
             if (keyCode === RIGHT_ARROW) {
-                if (channel === cartoonGif) {
-                    channel = filmGif;
-                    cartoonSFX.stop(); //stops the sound of the previous program to allow the next program's music to play
-                }
-                else if (channel === filmGif) {
-                    channel = infoGif;
-                    filmSFX.stop();
-                }
-                else if (channel === infoGif) {
-                    channel = musicGif;
-                    infoSFX.stop();
-                }
-                else if (channel === musicGif) {
-                    channel = newsGif;
-                    musicSFX.stop();
-                }
-                else if (channel === newsGif) {
-                    channel = weatherGif;
-                    newsSFX.stop();
-                }
-                else if (channel === weatherGif) {
-                    channel = vhsGif;
-                    weatherSFX.stop();
-                }
-                else if (channel === vhsGif) {
-                    channel = cartoonGif;
-                    vhsSFX.stop();
-                }
-                buttonSFX.play();
+                nextidx = (idx + 1) % program.length; // modulo arithmetic introduced by my dad
+
+
+                // if (channel === cartoonGif) {
+                //     channel = filmGif;
+                //     cartoonSFX.stop(); //stops the sound of the previous program to allow the next program's music to play
+                // }
+                // else if (channel === filmGif) {
+                //     channel = infoGif;
+                //     filmSFX.stop();
+                // }
+                // else if (channel === infoGif) {
+                //     channel = musicGif;
+                //     infoSFX.stop();
+                // }
+                // else if (channel === musicGif) {
+                //     channel = newsGif;
+                //     musicSFX.stop();
+                // }
+                // else if (channel === newsGif) {
+                //     channel = weatherGif;
+                //     newsSFX.stop();
+                // }
+                // else if (channel === weatherGif) {
+                //     channel = vhsGif;
+                //     weatherSFX.stop();
+                // }
+                // else if (channel === vhsGif) {
+                //     channel = cartoonGif;
+                //     vhsSFX.stop();
+                // }
             }
             // reverses the order of the images
             if (keyCode === LEFT_ARROW) {
-                if (channel === cartoonGif) {
-                    channel = vhsGif;
-                    cartoonSFX.stop();
+                if (idx === 0) {
+                    nextidx = program.length - 1;
                 }
-                else if (channel === vhsGif) {
-                    channel = weatherGif;
-                    vhsSFX.stop();
+                else {
+                    nextidx = idx - 1;
                 }
-                else if (channel === weatherGif) {
-                    channel = newsGif;
-                    weatherSFX.stop();
-                }
-                else if (channel === newsGif) {
-                    channel = musicGif;
-                    newsSFX.stop();
-                }
-                else if (channel === musicGif) {
-                    channel = infoGif;
-                    musicSFX.stop();
-                }
-                else if (channel === infoGif) {
-                    channel = filmGif;
-                    infoSFX.stop();
-                }
-                else if (channel === filmGif) {
-                    channel = cartoonGif;
-                    filmSFX.stop();
-                }
-                buttonSFX.play(); // plays sound when channel surfing
+                // if (channel === cartoonGif) {
+                //     channel = vhsGif;
+                //     cartoonSFX.stop();
+                // }
+                // else if (channel === vhsGif) {
+                //     channel = weatherGif;
+                //     vhsSFX.stop();
+                // }
+                // else if (channel === weatherGif) {
+                //     channel = newsGif;
+                //     weatherSFX.stop();
+                // }
+                // else if (channel === newsGif) {
+                //     channel = musicGif;
+                //     newsSFX.stop();
+                // }
+                // else if (channel === musicGif) {
+                //     channel = infoGif;
+                //     musicSFX.stop();
+                // }
+                // else if (channel === infoGif) {
+                //     channel = filmGif;
+                //     infoSFX.stop();
+                // }
+                // else if (channel === filmGif) {
+                //     channel = cartoonGif;
+                //     filmSFX.stop();
+                // }
             }
+            channel = program[nextidx]; // change channel to nextidx
+            audio[idx].stop(); // stop prev audio
+            idx = program.indexOf(channel); // load new index of current channel
             transparency = random(50, 230); //changes the transparency every time the buttons are pressed
             tvvolume = random(0.001, 0.005); // changes the music's volume every time the buttons are pressed
             staticvolume = random(0.1, 0.5); // changes the static's volume every time the buttons are pressed
-            checkSound();
+            buttonSFX.play(); // plays sound when channel surfing
+            checkSound(); // plays audio for current channel
+            idx = nextidx; //
         }
     }
 }
@@ -560,6 +555,7 @@ function mousePressed() {
         staticvolume = random(0.1, 0.5); // static sound is randomized everytime the program resets
 
         channel = random(program); // channel is randomized everytime the program resets
+        idx = program.indexOf(channel);
 
         icon = random(category); // icon is randomized everytime the program resets
     }
